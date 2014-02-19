@@ -1,0 +1,44 @@
+{% load dajaxice_templatetags %}
+
+<html>
+	<head>
+		<script type="text/javascript" src="/static/mathjax-MathJax-f5cd294/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		{% dajaxice_js_import %}
+		<script type="text/javascript">
+			//for solution checking
+			function solution_callback(data){
+				//alert('Error');
+				document.getElementById('feedback').innerHTML= data.result;
+				document.getElementById('feedback').style.visibility='visible';
+			}
+			function call_ajax(){
+				var user_ans=document.getElementById('user_ans').value;
+				var act_ans=document.getElementById('act_ans').value;				
+				Dajaxice.ExamPapers.DBManagement.check_solution(solution_callback,{'user_input':user_ans,'actual_ans':act_ans});
+			}
+			//for conversion
+			function pre_ajax(tb_id){
+				var user_ans=document.getElementById(tb_id).value;				
+				Dajaxice.ExamPapers.DBManagement.check_conversion(post_ajax,{'user_input':user_ans});
+			}
+			function post_ajax(data){
+				document.getElementById('a_mathml').value=data.result;				
+			}
+		</script>
+	<head/>
+	<body>		
+	<form>{% csrf_token %}
+		User Input: <input type='text' id='user_ans'/><br/>
+		Actual Solution: <input type='text' id='act_ans'/><br/>
+		
+		<input id="rand" onclick="this.value='Loading';call_ajax();this.value='Check Solution'" value="Check Solution" type="button"/><br/>
+		
+		Latex: <input type='text' id='latex'/><br/>
+		Ascii_Mathml: <input type='text' id='a_mathml'/><br/>
+				
+		<input id="rand" onclick="this.value='Loading';pre_ajax('latex');this.value='Convert'" value="Convert" type="button"/>
+		<a style="visibility:hidden" id="feedback">Error</a>
+		<br/><br/><a href='/home/'>Home</a>
+	</form>
+	<body>
+</html>

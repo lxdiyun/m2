@@ -1,0 +1,72 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Online Assessment System</title>
+		<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" media="screen" />
+		<script type="text/javascript" src="/static/mathjax-MathJax-f5cd294/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+			MathJax.Hub.Config({				
+				displayAlign: "left",
+				tex2jax: {inlineMath: [['$$','$$'],['\\[','\\]']], displayMath:[]} 
+			})
+		</script>
+	</head>
+	<body>
+		{% include 'header.html' %}
+		<div class="container-fluid" style="margin-top:40px;">
+			<div class="row-fluid">
+				<h1>{{page_title}}</h1>
+				<div class="well">
+					Total Questions: {{num_q}}
+				</div>
+				<form action="/math_admin_form/{{list_type}}/{{page_no}}/{{subj_id}}/{{list_id}}/-1/" method="get">
+					<input type="submit" class="btn btn-primary" id="submit"  name="attempt"  value="Insert New Question"/>
+				</form>
+				<table frame='box' rules='all' width='100%' border='2'>
+					<tr>
+						<td rowspan='2' width='90px'>Question Id</td>
+						<td rowspan='2' width='90px'>Paper</td>
+						<td colspan='3'>Question Summary</td>											
+					</tr>
+					<tr>
+						<td>Topic</td>
+						<td width='90px'>Solutions</td>
+						<td width='50px'>_</td>
+					</tr>
+				</table>
+				{% for q in questions %}											
+					<form action="/math_admin_form/{{list_type}}/{{page_no}}/{{subj_id}}/{{list_id}}/{{q.id}}/" method="get">
+						<table frame='box' rules='all' width='100%' border='2'>
+							<tr>
+								<td rowspan='2' width='90px'>{{q.id}}</td>
+								<td rowspan='2' width='90px'>{{q.paper}}</td>
+								<td colspan='3'>{{q.display}}</td>													
+							</tr>
+							<tr>
+								<td>{{q.subtopic}}</td>
+								<td width='90px'>{{q.sol_type}}</td>
+								<td width='50px'><input type="submit" class="btn btn-danger" id="submit" name="attempt"  value="Modify"/></td>
+							</tr>
+						</table>
+					</form>												
+				{% endfor %}
+				<div class="pagination">
+					<ul>
+						{% for p in page_links %}
+							{% if page_no == p %}
+								<li class="disabled"><a href="#">{{p}}</a></li>
+							{% else %}
+								<li class="active"><a href='/math_admin_list/{{list_type}}/{{subj_id}}/{{p}}/?list_id={{list_id}}'>{{p}}</a></li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+				<a href="/math_admin/{{subj_id}}/" class="btn btn-success">&laquo; Back to Admin List<a>
+			</div>
+		</div>
+		{% include 'footer.html' %}
+	</body>
+</html>

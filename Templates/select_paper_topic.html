@@ -1,0 +1,9 @@
+{% extends "topic_base.html"%}
+
+{%block topic_tag%}
+	href="/select_question/{{topic.id}}/-1/"
+{%endblock%}
+
+{%block subtopic_tag%}
+	href="/select_question/{{topic.id}}/{{s_topic.id}}/"
+{%endblock%}

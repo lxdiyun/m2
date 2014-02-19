@@ -1,0 +1,103 @@
+{% load search %}
+{% load highlight %}
+{% show_keywords as keywords %}
+<head>
+	<!--link href="/static/css/style2.css" rel="stylesheet" type="text/css" media="screen" /-->
+	<script src="/static/javascript/jquery-ui.js"></script>
+	<script src="/static/javascript/tagit.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.10.0.custom.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/tagit-dark-grey.css">
+	<link href="/static/css/highlight.css" rel="stylesheet" type="text/css" media="screen" />
+	<script type="text/javascript" src="/static/mathjax-MathJax-f5cd294/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+			MathJax.Hub.Config({				
+				displayAlign: "left",
+				tex2jax: {inlineMath: [['$$','$$'],['\\[','\\]']], displayMath:[]} 
+			})
+	</script>
+	<script>
+		$(function () {
+		  $('#search_field_tag').tagit({tagSource:{{keywords.show_keywords|safe}}, select:true, sortable:true});
+		});
+		</script>
+	<script type="text/javascript">
+		function display(dropdown){
+			var value = dropdown.options[dropdown.selectedIndex].value;
+			var tag_search = document.getElementById("tag_search");
+			var text_search = document.getElementById("text_search");
+			if (value == "1" && tag_search.style.display == "none") {
+					tag_search.style.display = "block";
+					text_search.style.display = "none";
+					text_search_whoosh.style.display = "none";
+			}
+			if (value == "2" && text_search.style.display == "none") {
+					tag_search.style.display = "none";
+					text_search.style.display = "block";
+					text_search_whoosh.style.display = "none";
+			}
+			if (value == "3" && text_search_whoosh.style.display == "none") {
+					tag_search.style.display = "none";
+					text_search.style.display = "none";
+					text_search_whoosh.style.display = "block";
+			}
+		}
+	</script>	
+</head>
+<div class="row-fluid" style="background:#CCCCCC; padding-top:20px; padding-bottom:20px; valign:center;">
+	<div class="span1" style="padding-left:10px;padding-right:00px;"><h4>Search:</h4></div>
+	<div class="span2" style="width:120px;margin-left:0px;">
+		<select name="search_type" style="width:100%" onchange="display(this)">
+			<option value="1">By Tag</option>
+			<option value="2" selected="selected">By DB Text</option>
+			<option value="3">By WH Text</option>
+		</select> 
+	</div>
+	<form id="tag_search" action="/result/1/" method="get" style="display:none">
+		<div id="tag" class="span9" style="margin-left:0px;">
+			<ul id="search_field_tag" data-name="tag">
+			{% if tags|length > 0 %}
+				{% for t in tags %}
+					<li data-value="{{t}}">{{t}}</li>
+				{% endfor %}
+			{% endif %}
+			</ul>
+		</div>
+		<div class="span1"><input type="submit" id="search" class="btn btn-inverse" style="height:34px;" value="Search" /></div>
+	</form>
+	<form id="text_search" action="/result_text/1/" method="get" style="display:block">
+		<div id="text" class="span9" style="margin-left:20px;">
+			<input type="text" name="q" id="q" style="width:100%" />
+		</div>
+		<div class="span1"><input type="submit" id="search" class="btn btn-inverse" style="height:34px;" value="Search" />
+		</div>
+	</form>
+	<form id="text_search_whoosh" action="." method="get" style="display:none">
+		<div id="text" class="span9" style="margin-left:20px;">
+			<input type="text" name="q" id="q" style="width:100%" />
+		</div>
+		<div class="span1"><input type="submit" id="search" class="btn btn-inverse" style="height:34px;" value="Search" />
+		</div>
+		{% if query %}
+            <h3>Results</h3>
+            {% for result in page.object_list %}
+				<b><a href ="/display_addmath_question/{{result.object.id}}/">Question ID: {{ result.object.id }} </a></b>
+				</br>
+                <p>
+					{% highlight result.object.content with request.GET.q css_class "highlight" max_length 5000%}
+                </p>
+            {% empty %}
+                <p>No results found.</p>
+			
+            {% endfor %}
+			
+            {% if page.has_previous or page.has_next %}
+                <div>
+                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    |
+                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            {# Show some example queries to run, maybe query syntax, something else? #}
+        {% endif %}
+	</form>
+</div>

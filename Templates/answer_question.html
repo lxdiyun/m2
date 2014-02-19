@@ -1,0 +1,37 @@
+{% load dajaxice_templatetags %}
+
+<html>
+	<head>
+		<script type="text/javascript" src="/static/mathjax-MathJax-f5cd294/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		{% dajaxice_js_import %}
+		<script type="text/javascript">
+			function solution_callback(data){
+				//alert('Error');
+				document.getElementById('solution').innerHTML="\\["+data.answer+"\\]";
+				MathJax.Hub.Typeset();
+				//document.getElementById('solution').innerHTML=data.answer;
+				document.getElementById('solution_section').style.display='';
+			}
+		</script>
+	<head/>
+	<body>		
+	<form>{% csrf_token %}
+		<a href="/select_test/">Back</a><br/>
+		Subject Id: {{subj}}<br/>
+		Topic Id: {{topic}}<br/>
+		Sub Topic Id: {{subTopic}}<br/><br/>
+		
+		{{question}}<br/>
+		
+		Answer:<br/>
+		<textarea rows=15 cols=100></textarea><br/>
+		
+		<div style="display:'none'" id='solution_section'>
+			Solution:<br/>
+			<a id="solution"></a><br/>
+		</div>
+		
+		<input id="rand" onclick="this.value='Loading';Dajaxice.DBManagement.getSolution(solution_callback,{'q_id':{{question_id}}});this.value='Check Solution'" value="Check Solution" type="button"/>
+	</form>
+	<body>
+</html>

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+<!-- template index_formula.html -->
+{% load i18n %}
+{% block forejs %}{% spaceless %} 
+<!--<script type="text/javascript" src="/static/mathjax-MathJax-f5cd294/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		MathJax.Hub.Config({				
+			displayAlign: "left",
+			tex2jax: {inlineMath: [['$$','$$'],['$','$'],['\\[','\\]']], displayMath:[]} 
+		})
+</script>-->
+<!-- <link rel="stylesheet" type="text/css" href="/static/content/lib/treeview/screen.css" />
+</link>	 -->
+<!-- <link rel="stylesheet" type="text/css" href="/static/content/lib/treeview/jquery.treeview.css" />
+</link>	
+<script type="text/javascript" src="/static/content/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/static/content/lib/treeview/jquery.treeview.js"></script>	
+<script type="text/javascript" src="/static/content/lib/treeview/demo.js"></script>
+<script type="text/javascript" src="http://latex.codecogs.com/editor3.js"></script> -->
+{% endspaceless %}{% endblock %}
+{% block title %}{% spaceless %} Q&A {% endspaceless %}{% endblock %}
+{% block content %}	
+<!--<script type="text/javascript">
+	$().ready(function() {
+		function formatItem(row) {
+			return row[0] + " (<strong>id: " + row[1] + "</strong>)";
+		}
+		function formatResult(row) {
+			return row[0].replace(/(<.+?>)/gi, '');
+		}
+	});
+</script>
+<script type="text/javascript">
+	function showformulaEditor(){
+		OpenLatexEditor('query','latex','',true,'','mini');
+		display_formula();
+	}
+</script>-->
+<div id="cnt" class="span13" style="margin: 0px; padding: 0px;width=1200px">
+	<form name="srch_formula" method="post" action="/question/?searchtype=formula&action=search&page=1">
+		 {% csrf_token %}
+		<table width="1400px">
+			<col style="width: 97%;"/>
+            <col style="width: 1.5%;"/>
+            <col style="width: 1.5%;"/>
+			<tr>
+				<td align="left" colspan="3" nowrap="nowrap">
+					{% include "t_formula_view.html" %}
+				</td>
+			</tr>
+			<tr align="left">
+				<td align="left">
+					<input id="query" name="query" type="text" value="{{ query }}" style="margin-left: 20px;width:100%" onkeyup="display_formula()" />
+						<script type="text/javascript" src="/static/content/js/tiny_mce/tiny_mce_popup.js"></script>
+						<script type="text/javascript">
+							display_formula();
+						</script>
+						<script type="text/javascript">
+							function submitquery(){
+								var query = encodeURIComponent(document.getElementById('query').value);
+								var query2 = encodeURIComponent(document.getElementById('outputMathML').value);
+								alert(query);
+								window.location.href = "?query=" + query + "&outputMathML=" + query2;
+							}
+						</script>
+				</td>
+				<td align="left">
+					<!-- <a href="javascript:submitquery();"> -->
+					<a href="javascript:document.srch_formula.submit()">
+						<div class="btn btn-inverse" style="margin-left: 55px;height:23px;" >Search</div>
+					</a>
+				</td>
+				<td align="left">
+					<a href="javascript:showformulaEditor()">
+					<!--a href="javascript:OpenLatexEditor('query','latex','',true)">-->
+						<div class="btn btn-inverse" style="margin-left: 25px;height:23px;">Editor</div>
+					</a>
+				</td>
+			</tr>
+		</table>
+		{% if query != "" and query %}
+		<div id="cnt" style="margin-left: 0px; padding: 0px;background:#FFFFFF;width:1470px">
+			<div id="subform_ctrl" style="height: 10px;">
+				<div style="float: right;"><a style="color: rgb(67, 115, 219);" class="gl nobr" href="#"></a></div>
+				<div>
+					<div id="resultStats">
+						<nobr></nobr>
+					</div>
+				</div>
+			</div>
+			<div class="span3" style="margin-top:10px;">
+				<div class="well sidebar-nav">
+					<li class="nav-header">Topic Distribution</li>
+						<ul class="nav nav-list">
+							<li {% if topic_id == 0 %}class="active"{% endif %}><a>All ({{global_total}})</a></li>
+							{% for topic in topic_bar %}
+								{% if topic.count > 0 %}
+							<li {% if topic_id == topic.id %}class="active"{% endif %}><a>{{topic.title}} ({{topic.count}})</a><br/></li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+				</div>
+			</div>
+			<div id="nr_container" style="height: auto;">
+				<table width="1470px">
+					<tr>
+						<td valign="top">
+							<div class="span14" style="padding-left:20px"><b><h3>{% trans "Search Results" %}</h3></b></div></td>
+					</tr>
+					<tr>
+						<td valign="top">
+						{% include "t_search_content_formula.html" %}
+						</td>
+					</tr>
+				</table>
+
+					<!--<tr>
+						<td width="170px" valign="top">
+							&nbsp;
+						</td>
+						<td width="560px" valign="top">-->
+							{% include "t_page_navigator.html" %}
+						<!--</td>
+					</tr>
+				</table>-->
+			</div>
+		</div>
+		{% endif %}		
+	</form>
+</div>
+{% endblock %}
+<!-- end template index_formula.html -->

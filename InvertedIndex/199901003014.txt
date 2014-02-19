@@ -1,0 +1,1 @@
+term series find first term prove induction given using formula result part prove

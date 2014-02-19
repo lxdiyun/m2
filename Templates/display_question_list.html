@@ -1,0 +1,62 @@
+<html>	
+	<head>
+		<script type="text/javascript" src="/static/mathjax-MathJax-f5cd294/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+			MathJax.Hub.Config({				
+				displayAlign: "left",
+				tex2jax: {inlineMath: [['$$','$$'],['\\[','\\]']], displayMath:[]} 
+			})
+		</script>
+	</head>
+	<body>		
+	<form>
+		<a href="/topics/">Back</a>
+		<br/><br/>
+		Main Topic: {{main_topic.title}}<br/>
+		Sub Topic: {{sub_topic.title}}<br/>
+		Number of Questions: {{question_count}}<br/>
+		<ol>
+		{%for q in questions%}
+			<li><ul>
+				<li>Question_Id: {{q.id}}</li>
+				<li>Question_No: {{q.question_no}}</li>
+				<li>Content: {{q.content}}</li>
+				<li>Difficulty: {{q.difficulty_level}}</li>				
+				{%if q.sub_questions%}
+					<li>
+					SubQuestions:
+					<ul>
+						{%for sQ in q.sub_questions%}
+							<li>
+								{%if sQ.question_no%}{{sQ.question_no}}{%endif%}
+								{%if sQ.question_part%}{{sQ.question_part}}{%endif%}
+								: {{sQ.content}}
+								<br/>
+								{%if sQ.std_answer%}
+									Solution: {{sQ.std_answer}}
+								{%endif%}
+							</li>
+						{%endfor%}
+					</ul>
+					</li>
+				{%endif%}
+				{%if q.std_answer%}
+					<li>Base Solutions:<br/>
+					{{q.std_answer}}					
+					</li>
+				{%endif%}
+				{%if q.solutions%}
+					<li>Solution:<br/>
+					{%for qSol in q.solutions%}
+						id: {{qSol.id}}<br/>
+						ans: {{qSol.content}}<br/>
+						{%if qSol.source%}{{qSol.source}}{%endif%}
+						<br/><br/>
+					{%endfor%}					
+					</li>
+				{%endif%}
+			</ul></li>
+		{%endfor%}
+		</ol>
+	</form>
+	<body>
+</html>

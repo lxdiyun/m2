@@ -1,0 +1,53 @@
+<!-- template t_page_navigator.html -->
+{% load i18n %}
+<!--	{% for result in search_results_ttpg %}
+		 <div id ='paging' class='pagination' align='center'>
+			<table>
+                <tr>
+					Debug {{ result.0 }}, {{ result.1 }}, {{ result.2 }}, {{ result.3 }}, {{ result.4 }}, {{ result.5 }} 
+                    <td nowrap="nowrap" width="100%">
+                        <b>{{ result.0 }}</b> {% trans "results" %}
+			            {% if result.1 > 1 %}
+					            <a href="{{ base_url }}searchtype=formula&page={{ result.3 }}">{% trans "Previous" %}</a>					
+			            {% else %}
+					            <span>{% trans "Previous" %}</span>
+			            {% endif %}
+
+			            {% for i in result.2  %}
+				            {% if i = result.1  %}
+					            <span>{{ i }}</span>
+
+				            {% else %}
+					             <a href="{{ base_url }}searchtype=formula&page={{ i }}">{{ i }}</a>
+
+				             {% endif %}
+			            {% endfor %}
+
+			            {% if result.1 < result.5 %}
+					            <a href="{{ base_url }}searchtype=formula&page={{ result.4 }}">{% trans "Next" %}</a>
+			            {% else %}
+					            <span>{% trans "Next" %}</span>
+            					
+			            {% endif %}	
+			        </td>
+                </tr>
+            </table>	
+		</div>
+	{% endfor %}-->
+	{% for result in search_results_ttpg %}
+		<div class="span9" style="margin-left: 0px; padding: 0px;background:#FFFFFF;width:1470px">
+		<div class="pagination" style="margin-left: 500px;">
+			<ul>
+				{% for i in result.2  %}
+					{% if i = result.1 %}
+						<li class="disabled"><a href="#">{{i}}</a></li>
+					{% else %}
+						<li class="active"><a href="{{ base_url }}searchtype=formula&page={{ i }}">{{i}}</a></li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+		</div>
+	{% endfor %}
+<!-- end template t_page_navigator.html -->
+
