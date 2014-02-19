@@ -149,6 +149,8 @@ INSTALLED_APPS = (
 	'resource',
     'haystack',
 	'dajaxice',
+    'ExamPapers.resource',
+    'ExamPapers.resource.templatetags'
 )
 
 HAYSTACK_CONNECTIONS = {
