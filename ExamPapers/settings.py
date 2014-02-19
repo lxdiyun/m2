@@ -27,8 +27,6 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'resource/static'),
-    os.path.join(BASE_DIR, 'resource'),
-    os.path.join(BASE_DIR, 'resource/templatetags'),
 )
 
 
