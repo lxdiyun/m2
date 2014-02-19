@@ -188,3 +188,6 @@ HIGHLIGHT_TAG_OPEN  = '<span class=\"highlight\">'
 HIGHLIGHT_TAG_CLOSE = '</span>'
 ################
 
+
+os.environ['DJANGO_SETTINGS_MODULE'] = "ExamPapers.settings"
+

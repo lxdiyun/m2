@@ -9,7 +9,7 @@ admin.autodiscover()
 
 from dajaxice.core import dajaxice_autodiscover
 dajaxice_autodiscover()
-import settings
+from django.conf import settings
 
 
 urlpatterns = patterns('',
