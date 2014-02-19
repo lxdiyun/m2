@@ -1,1 +1,0 @@
-failure rate treatment find probability exactly failure randomly chosen patient receiving treatment given fewer failure treatment find conditional probability exactly failure give answer correct decimal place

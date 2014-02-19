@@ -1,1 +1,0 @@
-diagram show curve passing point trapezium rule interval width estimate area shaded region

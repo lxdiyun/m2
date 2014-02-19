@@ -1,1 +1,0 @@
-find using substitution giving answer correct decimal place

@@ -1,1 +1,0 @@
-random variable distribution function given find percentile find also expectation variance

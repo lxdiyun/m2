@@ -1,1 +1,0 @@
-first state computer game player chooses random icon correct correct icon chosen second stage player chooses random icon correct incorrect icon chosen first stage second stage player chooses random icon correct event defined follows first icon chosen correct b:the second icon chosen correct find

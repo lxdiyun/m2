@@ -1,1 +1,0 @@
-given equation root close zero quadratic approximation estimate root

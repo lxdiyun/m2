@@ -1,1 +1,0 @@
-given equation exactly real root iteration finding iteration first approximation find correct decimal place show value obtained using iteration newton-raphson method first approximation applied equation

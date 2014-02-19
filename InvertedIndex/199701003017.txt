@@ -1,1 +1,0 @@
-express partial fraction given sufficiently small higher power neglected show quadratic approximation estimate value prove induction otherwise

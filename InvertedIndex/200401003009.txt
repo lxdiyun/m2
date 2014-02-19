@@ -1,1 +1,0 @@
-find many positive integer le 1000 number number divisible find number le 1000 divisible

@@ -1,1 +1,0 @@
-prove induction show positive integer value deduce result

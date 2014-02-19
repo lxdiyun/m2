@@ -1,1 +1,0 @@
-number expressed prime factor excluding many positive integer factor
