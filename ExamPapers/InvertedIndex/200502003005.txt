@@ -1,0 +1,1 @@
+sketch diagram curve illustrate clearly equation exactly root newton-raphson method used find root equation iteration first approximation find second approximation correct decimal place without using iteration prove answer part fact give correct decimal place

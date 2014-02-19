@@ -1,0 +1,33 @@
+<html>	
+	<body>		
+	<form>
+		<a href="/home/">home</a>
+		<br/><br/>
+		<ul style="list-style-type:none">
+			<li>Number of Topics: {{topic_count}}</li>			
+			<li>Questions in Database: {{db_question_count}}</li>
+			<li>Questions in Topics: {{total_questions}}</li>
+			{%for t in topics%}
+				<li></li>
+				<li>{{t.title}}: ({{t.educ}} - {{t.subj}})
+				<li>Sub Topics: {{t.subtopics_count}}</li>
+				<br/>Total Number of Questions: {{t.total_questions}}
+				<br/>Total Number of Questions DBCount: {{t.dbCount_Quest}}
+				<ol>
+					{%for st in t.subtopics%}
+					<li>
+					<a style="width:200px">{{st.title}}:</a>
+					{{st.question_count}} questions, 
+					{{st.non_question}} with sub questions,
+					{{st.answer_count}} with answers,
+					{{st.solution_count}} with solutions,
+					{{st.subquestion_count}} sub questions,
+					{{st.subanswer_count}} sub questions with answers					
+					</li>
+					{%endfor%}
+				</ol>
+				</li>
+			{%endfor%}
+		</ul>
+	<body>
+</html>

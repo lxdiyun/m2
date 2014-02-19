@@ -1,0 +1,1 @@
+line intersects curve point prove line normal curve exactly point

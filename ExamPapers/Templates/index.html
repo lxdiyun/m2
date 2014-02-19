@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Online Assessment System</title>
+		<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" media="screen" />
+		{% include 'head.html' %}
+	</head>
+	<body>
+		{% include 'header.html' %}
+		<div class="hero-unit" style="background-image:url('/static/image/pattern.jpg'); margin-bottom:0px;line-height:80px;border-radius: 0px;">
+			<h1 style="color:#EEEEEE;">mathanalyzer</h1>
+			<p style="color:#EEEEEE;">A simple Mathematics data analyzer that aims to bridge the gap of learning Mathematics.</p>
+			<!-- <p>
+				<a class="btn btn-primary btn-large" href="/analyzer/3/">
+				Try now
+				</a>
+			</p> -->
+		</div>
+		{#% include 'searchbar.html' %#}
+		<div class="row-fluid" style="text-align:center; valign:bottom;padding-top:20px;">
+			<h1 style="margin-bottom:50px">Introducing mathanalyzer.</h1>
+			<ul class="thumbnails">
+				 <li class="span4">
+					<div class="thumbnail" style="border:0px;border-radius:0px;box-shadow:none;">
+						<img src="/static/image/browse.png" width="150" alt="Browse" />
+						<h3>Browse</h3>
+						<p>View questions from over a decade with solutions provided by topic or paper</p>
+						<br/><br/>
+						<a class="btn btn-info" href="/mathsection/3/">Browse Now </a>
+					</div>
+				</li>
+				<li class="span4">
+					<div class="thumbnail" style="border:0px;border-radius:0px;box-shadow:none;">
+						<img src="/static/image/analyze.png" width="78" alt="Analyze Paper" />
+						<h3>Lookin to brush up</h3>
+						<p>Browse through key concepts and formulae by topic</p>
+						<br/><br/>
+						<a class="btn btn-info" href="/concept/3/">View Concepts & Formulae</a>
+					</div>
+				</li>
+				<li class="span4">
+					<div class="thumbnail" style="border:0px;border-radius:0px;box-shadow:none;">
+						<img src="/static/image/search.png" width="150" alt="Admin" />
+						<h3>Search</h3>
+						<p>Know what you are looking for? Search for questions and solutions by tag or text</p>
+						<br/>
+						<a class="btn btn-info" href="/search/">Search Now </a>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<hr>
+		<div class="row-fluid" style="text-align:center;">
+			<h1>We need your feedback.</h1>
+			<div class="row-fluid" style="margin-top:20px;">
+				<h4>Let us know your feedback about our system to allow us to improve further.</h4>
+				<a class="btn btn-success btn-large" href="http://www.surveymonkey.com/s/TJTZC5H">Feedback Now <i class="icon-comment icon-white"></i></a>
+			</div>
+			</div>
+		</div>
+	</body>
+	{% include 'footer.html' %}
+</html>

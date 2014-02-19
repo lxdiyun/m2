@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<translate>
+		<text id="helpMsg"></text>
+		<text id="matrixChoiceLines">Nb of Lines:</text>
+		<text id="matrixChoiceColumns">Nb of columns:</text>		
+		<text id="matrixChoiceButton">Create matrix</text>				
+	</translate>
+	<properties>
+		<property id="width">600</property>
+		<property id="height">350</property>		
+		<property id="disableSave">true</property>
+		<property id="disableOpen">true</property>
+		<property id="loadOnInit">true</property>
+		<property id="urlGenerateImage">http://155.69.101.206/bingo/Global_Pages/imageCapture.php</property>	
+	</properties>
+	<toolbars>
+		<toolbar id = "toolbar_top1" disabled="true"/>
+		<toolbar id = "toolbar_right1" disabled="true"/>
+		<toolbar id = "toolbar_bottom2" disabled="true"/>
+		
+		
+	</toolbars>
+
+	
+</configuration>

@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load highlight %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Online Assessment System</title>
+		<!--<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" media="screen" />-->
+		<script type="text/javascript" src="/static/mathjax-MathJax-f5cd294/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+			MathJax.Hub.Config({				
+				displayAlign: "left",
+				tex2jax: {inlineMath: [['$$','$$'],['\\[','\\]']], displayMath:[]} 
+			})
+		</script>
+		{% include 'head.html' %} 
+		<script type="text/javascript">
+			function toggle(qid, button_id) {
+				var ele_name = "sol_" + qid;
+				var ele = document.getElementById(ele_name);
+				var text = document.getElementById(button_id);
+				if(ele.style.display == "block") {
+						ele.style.display = "none";
+					text.value = "View Solution";
+				}
+				else {
+					ele.style.display = "block";
+					text.value = "Hide Solution";
+				}
+			}
+			function toggletags(qid, button_id) {
+				var ele_name = "tag_" + qid;
+				var ele = document.getElementById(ele_name);
+				var text = document.getElementById(button_id);
+				if(ele.style.display == "block") {
+						ele.style.display = "none";
+					text.value = "View Concepts & Formulae";
+				}
+				else {
+					ele.style.display = "block";
+					text.value = "Hide Concepts & Formulae";
+				}
+			} 
+		</script>
+	</head>	
+	<body>
+		{% include 'header.html' %}
+		<div class="row-fluid" style="margin-top:40px;">
+			{% include 'searchbar_default.html' %}
+		</div>
+		<div class="container-fluid"  style="margin:0px;padding:0px;">
+			<div class="row-fluid" style="margin:0px;padding:0px;">
+			    <div class="navbar" style="border-radius:0px;">
+					<div class="navbar-inner">
+						<ul class="nav">
+							<li {% if type == "search" or type = None %} class="active" {% endif %}><a href="/result/1/?type=search&{{urltags}}{% if topic_id != 0 %}&topic={{topic_id}}{% endif %}"><span>Exact-Match Search</span></a></li>
+							<li {% if type == "combined_search" %} class="active" {% endif %}><a href="/result/1/?type=combined_search&{{urltags}}{% if topic_id != 0 %}&topic={{topic_id}}{% endif %}"><span>Combinatorial Search</span></a></li>
+							<li {% if type == "image" %} class="active" {% endif %}><a href="/result/1/?type=image&{{urltags}}{% if topic_id != 0 %}&topic={{topic_id}}{% endif %}"><span>Images</span></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="span3" style="margin-top:10px;">
+				<div class="well sidebar-nav">
+					<li class="nav-header">Topic Filter</li>
+					<ul class="nav nav-list">
+						<li {% if topic_id == 0 %}class="active"{% endif %}><a href="/result/1/?type={{type}}&{{urltags}}">All ({{global_total}})</a></li>
+						{% for topic in topic_bar %}
+							{% if topic.count > 0 %}
+								<li {% if topic_id == topic.id %}class="active"{% endif %}><a href="/result/1/?type={{type}}&{{urltags}}&topic={{topic.id}}">{{topic.title}} ({{topic.count}})</a><br/></li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div class="span9">
+				{% if type == "search" or type == "combined_search" %}
+					<h1>Search Result</h1>
+					<hr>
+					<div class="alert alert-block alert-info">
+						<h3>Total Questions: {{num_q}}</h3>
+					</div>
+					{% for q in questions %}
+					<div class="row-fluid">
+					<div class="well well-large span8">
+						<h3><a id="{{q.id}}" href ="/display_addmath_question/{{q.id}}/?searchtype=tag">Question {{q.question_no}} of {{q.paper}}:</a></h3>
+						<!--<div class="row-fluid">
+							<div class="span2">Qid: {{q.id}}</div>
+							<div class="span2">Topic: {{q.topic}}</div>
+							<div class="span8">Sub-Topic: {{q.subtopic}}</div>
+						</div>-->
+						<hr>
+						{% for item in q.display %}
+							{% ifequal item.type 1 %}
+								{{item.value}}
+							{% endifequal %}
+							{% ifequal item.type 2 %}
+								<img src="{{item.value}}" alt="{{item.value}}"/>
+							{% endifequal %}		
+							<br/>
+						{% endfor %}
+						<!--<br/>
+						({{q.marks}} marks)<br/>
+						<br/>-->
+						<!--<input type="button" id="toggleans_{{q.id}}" name="toggleans" class="btn btn-inverse" onclick="toggle({{q.id}}, this.id);"  value="View Solution"/>
+						<br/>-->
+						<!--<div class="row-fluid" id="sol_{{q.id}}" style="display:none;">
+							{% if q.displayans > 0 %}
+								{% for ans in q.displayans %}
+									<br/>
+									{% ifequal ans.type 1 %}
+										{{ans.value}}
+									{% endifequal %}
+									{% ifequal ans.type 2 %}
+										<img src="{{ans.value}}" alt="{{ans.value}}"/>
+									{% endifequal %}
+								{% endfor %}
+							{% else %}
+								Answer not found
+							{% endif %}
+						</div>-->
+					</div>
+					<div class="well well-large span4">	
+					<br>
+					<input type="button" id="toggletags_{{q.id}}" name="toggletags" class="btn btn-inverse" onclick="toggletags({{q.id}}, this.id);"  value="View Concepts & Formulae"/>
+					<br>
+						<div class="row-fluid" style="display:none;" id="tag_{{q.id}}">
+							<div class="span1"><h5>Tags:</h5></div>
+							<br><br>
+							<div class="span11">
+							{% if q.taglist != null %}
+								{% for tag in q.taglist %}
+									{% if tag != null %}
+										{% if tag.tag.type == 'K' %}
+											<!--<a class="btn btn-success" style="margin-bottom:5px;" href="/question/tag/{{cur_subj.id}}/1/?list_id={{tag.tag.id}}">{{tag.tag.title}}</a>-->
+										{% elif tag.tag.type == 'C' %}
+											<a class="btn btn-danger" style="margin-bottom:5px;" href="/question/tag/{{cur_subj.id}}/1/?list_id={{tag.tag.id}}">{{tag.tag.title}}</a>
+										{% elif tag.tag.type == 'F' %}
+											<a class="btn btn-info" style="margin-bottom:5px;" href="/question/tag/{{cur_subj.id}}/1/?list_id={{tag.tag.id}}">{{tag.tag.title}}</a>
+										{% endif %}
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+							</div>
+						</div>
+					</div>
+					</div>
+					{% endfor %}
+					<div class="pagination">
+						<ul>
+							{% for p in page_links %}
+								{% if page_no == p %}
+									<li class="disabled"><a href="#">{{p}}</a></li>
+								{% else %}
+									<li class="active"><a href='/result/{{p}}/?type={{type}}&{{urltags}}'>{{p}}</a></li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				{% elif type == "image" %}
+					<h1>Image Result</h1>
+					<hr>
+					<div class="row-fluid">
+					{% for image in questions %}
+						<div class="span4">
+							<a class="thumbnail" href="/display_addmath_question/{{image.qa_id}}/"><img src="/static/image/{{image.imagepath}}" alt="{{image.qa_id}}" width="180"/></a>
+							<div align="center"><a href="/display_addmath_question/{{image.qa_id}}/">Question ID: {{image.qa_id}}</a>
+							<br>Image is a part of {{image.qa}}</div>
+						</div>
+						{% if forloop.counter|divisibleby:"3" %}
+						</div>
+						<div class="row-fluid">
+						{% endif %}
+					{% endfor %}
+					</div>
+					<div class="pagination">
+						<ul>
+							{% for p in page_links %}
+								{% if page_no == p %}
+									<li class="disabled"><a href="#">{{p}}</a></li>
+								{% else %}
+									<li class="active"><a href='/result/{{p}}/?type={{type}}&{{urltags}}'>{{p}}</a></li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</body>
+	{% include 'footer.html' %}
+</html>

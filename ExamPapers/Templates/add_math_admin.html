@@ -1,0 +1,69 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Online Assessment System</title>
+		<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+	<body>
+		{% include 'header.html' %}
+		<div class="container-fluid" style="margin-top:40px;">
+			<div class="row-fluid">
+					<h1>Modifying {{cur_subj.title}}</h1>
+					<hr>
+					<h3>Choose by Paper:</h3>
+					<form name="papers" action="/math_admin_list/paper/{{subj_id}}/1/" method="get">
+						<div class="row-fluid">
+							<div class="span11">
+								<select name="list_id" style="width:100%">
+									{% for p in papers%}
+										<option value="{{p.id}}">{{p.year}} {{p.month}} Paper {{p.number}}</option>
+									{% endfor %}											
+								</select>
+							</div>
+							<div class="span1">
+								<input type="submit" class="btn btn-primary" id="submit" name="submit" value="Submit"/>
+							</div>
+						</div>
+					</form>
+					<h3>Choose by Topic:</h3>					
+					<form name="papers" action="/math_admin_list/topic/{{subj_id}}/1/" method="get">
+						<div class="row-fluid">
+							<div class="span11">
+								<select name="list_id" style="width:100%">
+									{% for t in topics %}
+										<option value="{{t.id}}">{{t.title}}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="span1">
+								<input type="submit" class="btn btn-primary" id="submit" name="submit" value="Submit"/>
+							</div>
+						</form>	
+					</div>
+					<!--
+					<h2 class="title">Choose by Solution Type:</h2>					
+					<div style="clear: both;">&nbsp;</div>
+					<div class="entry">								
+						<form name="papers" action="/math_admin_list/question_type/{{subj_id}}/1/" method="get">
+							<div align="left">										
+								<select name="list_id" style="width:88%">
+									{% for s in sol_type %}
+										<option value="{{s.id}}">{{s.name}}</option>
+									{% endfor %}
+								</select>
+								<input type="submit" class="btn" id="submit" name="submit" value="Submit"/>
+							</div>
+						</form>	
+					</div>							
+					<br/>
+					-->
+			</div>
+		</div>
+	</body>
+	{% include 'footer.html' %}
+</html>

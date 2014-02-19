@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Online Assessment System</title>
+		<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" media="screen" />
+		<script type="text/javascript" src="/static/mathjax-MathJax-f5cd294/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+				MathJax.Hub.Config({				
+					displayAlign: "left",
+					tex2jax: {inlineMath: [['$$','$$'],['\\[','\\]']], displayMath:[]} 
+				})
+		</script>
+	</head>
+	<body>
+		{% include 'header.html' %}
+		<div class="container-fluid" style="margin-top:40px;">
+			<div class="row-fluid">
+				<h1>Admin Taglist</h1>
+				<hr>
+				<div class="row-fluid">
+					<h5>Tag Type (Now Viewing):</h5>
+				</div>
+				<form name="papers" action="/math_admin_taglist/" method="get">
+					<div class="row-fluid">
+						<div class="span11">
+							<select name="type" style="width:100%">
+									<option value="K" {% if type == 'K' %} selected {% endif %}>Keyword</option>
+									<option value="C" {% if type == 'C' %} selected {% endif %}>Concept</option>
+									<option value="F" {% if type == 'F' %} selected {% endif %}>Formula</option>
+							</select>
+						</div>
+						<div class="span1">
+							<input type="submit" class="btn btn-primary" id = "submit" name="submit" value="Submit"/>
+						</div>
+					</div>
+				</form>
+				<div class="well">
+				<h4>Trigger Keyword Regeneration</h4>
+				<hr>
+					<form name="regen" action="/math_admin_regenkeyword/" method="get">
+						<input type='submit' class='btn btn-danger' id='submit' name='submit' onclick='return window.confirm("Are you sure you want to regenerate keyword tags?")' value='Regenerate Keywords'/>
+					</form>
+					<div class="alert alert-error">Important: Regenerate Keywords might take awhile once invoked. Please do not break the loading as it will cause the regeneration to be done inappropriately.</div>
+				</div>
+				
+				{% if type != None %}
+					<div class="row-fluid">
+						<form name="add" action="/math_admin_tag_form/" method="get">
+							<input type='submit' class='btn btn-primary' id='submit' name='submit' value='Add Tag'/>
+						</form>
+					</div>
+					<form name="papers" action="/math_admin_taglist/" method="get">
+						<table class="table">
+							<tr>
+								<th width="20%">Title</th>
+								<th width="20%">Type</th>
+								<th width="45%">Description</th>
+								<th width="15%">Action</th>
+							</tr>
+							{% for tag in taglist %}
+							<tr>
+								<td>{{tag.title}}</td>
+								<td>{{tag.type}}</td>
+								<td><!--{{tag.content|safe}}-->
+									{% for item in tag.content %}
+										{% ifequal item.type 1 %}
+											{{item.value|safe}}
+										{% endifequal %}
+										{% ifequal item.type 2 %}
+											<img src="{{item.value}}" alt="{{item.value}}"/>
+										{% endifequal %}		
+										<br/>
+									{% endfor %}
+									<br/>
+								</td>
+								<td><a class="btn btn-inverse" href="/math_admin_tag_form/?id={{tag.id}}">Edit</a> <a class="btn btn-danger" href="/math_admin_tag_delete/?id={{tag.id}}" onclick='return window.confirm("Confirm Delete?")'>Delete</a></td>
+							</tr>
+							{% endfor %}
+						</table>
+					<form name="papers" action="/math_admin_taglist/" method="get">
+				{% endif %}
+				</div>
+				<div class="clear"></div>
+			</div>
+			{% include 'footer.html' %}
+		</div>
+	</body>
+</html>

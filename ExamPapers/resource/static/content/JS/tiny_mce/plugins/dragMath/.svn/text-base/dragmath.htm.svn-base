@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="js/dialog.js"></script>
+</head>
+<body>
+
+
+<form action="#">
+	
+	<div id = "showdragmath" style="display:block">
+		<applet width="540" height="270" archive="DragMath.jar" code="Display.MainApplet.class" codebase="applet" name="dragmath">
+	        <param value="en" name="language" />
+	        <param name=outputFormat value="ASCIIMathML" />
+	        <param name=hideMenu value="true">
+	        <param name=hideToolbar value="true">
+	   	</applet>
+		<div class="mceActionPanel">
+			<input type="button" id="insert" name="insert" value="{#insert}" onclick="insertFormula();" />
+			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+			<input type="button" class="button" id="help" name="help" value="help" onclick="showvideo();" />
+		</div>
+	</div>
+	
+	<div id="showvideo" style="display:none">
+		<object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/8wfjwJTa784?fs=1&amp;hl=zh_CN"></param>
+		<param name="allowFullScreen" value="true"></param>
+		<param name="allowscriptaccess" value="always"></param>
+		<embed src="http://www.youtube.com/v/8wfjwJTa784?fs=1&amp;hl=zh_CN" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="540" height="270"></embed>
+		</object>
+		
+		<input type="button" id="cancel" name="cancel" value="Back to Work" onclick="hidevideo()"/>
+		
+	</div>
+</form>
+
+
+	<script type="text/javascript">
+		function insertFormula() {			
+			var mathExpression = document.dragmath.getMathExpression();
+			tinyMCEPopup.editor.execCommand('mceInsertContent', false, mathExpression);
+			tinyMCEPopup.close();
+		}
+		function showvideo(){
+			//alert('ddddddddddddddddd');
+			document.getElementById("showdragmath").style.display = "none";
+			document.getElementById("showvideo").style.display = "block";
+		}
+		function hidevideo(){
+			document.getElementById("showdragmath").style.display = "block";
+			document.getElementById("showvideo").style.display = "none";
+		}
+	</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

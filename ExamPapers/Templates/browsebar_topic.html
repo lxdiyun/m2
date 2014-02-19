@@ -1,0 +1,30 @@
+<!--<div class="well sidebar-nav">
+  <div class="panel-group" id="accordion">
+  	<div class="panel panel-default">
+    	<div class="panel-heading">
+      		<h4 class="panel-title">
+        			<a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" href="#collapseOne">
+          		  By Topic
+        			</a>
+      		</h4>
+    	</div>
+    	<div id="collapseOne" class="panel-collapse collapse">
+        <div class="panel-body">
+          <ul> 
+            {% for t in topics %}
+						<li><a href ="/question/topic/{{cur_subj.id}}/1/?list_id={{t.id}}&submit=Submit">{{t.title}}</a></li>
+						{% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>-->
+<div class="well sidebar-nav">
+  <li class="nav-header">Topics Available</li>
+    <ul class="nav nav-list">
+        {% for t in topics %}
+          <li><a href="/concept/3/?list_id={{t.id}}&submit=Submit">{{t.title}}</a></li>
+        {% endfor %}
+    </ul>
+</div>

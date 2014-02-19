@@ -1,0 +1,43 @@
+<html>	
+	<head>
+		<link href="/static/Css/Menu.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript">
+			function chg_visible(id){
+				var item=document.getElementById(id);				
+				item_list=item.getElementsByTagName("ol")[0];
+				if(item_list.style.display=='none')
+					item_list.style.display='block';
+				else
+					item_list.style.display='none';
+			}
+		</script>
+	</head>
+	<body>		
+	<form>
+		<a href="/home/">home</a>
+		<br/><br/>
+		Number of Topics: {{topic_count}}
+		<br/>
+		{%for sb in subject%}
+		<a style="font-weight:bold;font-size:larger;text-decoration:underline" {%block title_tag%}{%endblock%}>{{sb.educ}}: {{sb.title}}</a><br/>
+		Topics:<br/>
+		<ul style="list-style-type:none">					
+			{%for topic in sb.topics%}
+				<li><a {%block topic_tag%}{%endblock%}>{{topic.id}}: {{topic.title}}</a></li>
+				<li id='id_{{topic.id}}' onclick="chg_visible('id_{{topic.id}}')">
+					<a id='sub_item'  style="color:green;text-decoration:underline">Sub_topics[ {{topic.subtopics_count}} ]</a><br/>
+
+					<ol style="display:none">
+					{%for s_topic in topic.subtopics%}				
+						<li><a {%block subtopic_tag %}{%endblock%}>{{s_topic.title}}</a>							
+						</li>
+					{%endfor%}
+					</ol>
+				
+				</li>
+				<br/>
+			{%endfor%}		
+		</ul>
+		{%endfor%}
+	<body>
+</html>
