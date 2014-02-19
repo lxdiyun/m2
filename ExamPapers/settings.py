@@ -17,7 +17,7 @@ import dj_database_url
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
+DJANGO_SETTINGS_MODULE = 'ExamPapers.settings'
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
@@ -189,5 +189,5 @@ HIGHLIGHT_TAG_CLOSE = '</span>'
 ################
 
 
-os.environ['DJANGO_SETTINGS_MODULE'] = "ExamPapers.settings"
+
 
