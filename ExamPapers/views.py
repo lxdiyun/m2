@@ -2,6 +2,7 @@
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django import template
 from ExamPapers.DBManagement.models import *
 from django.db.models import Count
 from collections import Counter
@@ -49,6 +50,15 @@ addMaths_q_per_page=10
 
 #Solution format
 sol_format={'v':'Values','r':'Ratio','c':'Coordinates','m':'Matrix','i':'Inequality','e':'Equation','n':'Not_Equal','p':'Proving','d':'Diagram'}
+
+
+register = template.Library()
+
+def show_keywords():
+	types = ['F','C']
+	keywords = [definition.encode("utf8") for definition in tag_definitions.objects.filter(type__in=types).values_list('title', flat=True).order_by('title')]
+	return {'show_keywords': keywords}
+register.assignment_tag(show_keywords)
 
 def topics(request):
 	param={}
@@ -2333,6 +2343,9 @@ def search_page(request):
 	param['searchtype'] = searchtype
 	param['base_url'] = base_url
 
+	types = ['F','C']
+	keywords = [definition.encode("utf8") for definition in tag_definitions.objects.filter(type__in=types).values_list('title', flat=True).order_by('title')]
+
 	try:
 		action = request.GET.get('action', '')
 	except ValueError:
@@ -2344,7 +2357,8 @@ def search_page(request):
                               {'query': query ,
                                'topics': subj ,
 							   'kvaluelist': kvaluelist,
-                               'searchtype' : searchtype },
+                               'searchtype' : searchtype, 
+                               'keywords': keywords },
                                context_instance=RequestContext(request)
                                )
 
