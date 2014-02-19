@@ -5,7 +5,6 @@ asciitomathml==.89
 dj-database-url==0.2.2
 git+https://github.com/wnh/dj-static.git@feature/django-1.4-compat#egg=dj-static 
 django-haystack==2.1.0
-django-toolbelt==0.0.1
 gunicorn==18.0
 nltk==2.0.4
 psycopg2==2.5.2
