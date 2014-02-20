@@ -30,7 +30,8 @@ import nltk
 nltk.data.path.append('./nltk_data/')
 from nltk.stem.wordnet import WordNetLemmatizer
 import os
-from django.conf.settings import BASE_DIR
+#from django.conf.settings import BASE_DIR
+from ExamPapers.settings import BASE_DIR
 
 import asciitomathml.asciitomathml
 import urllib2
@@ -3111,7 +3112,7 @@ def parsetexts():
 	texts, words = {}, set()
 	for q_id in qid_set:
 	#for txtfile in glob(fileglob):
-		with open(os.path.join(BASE_DIR,(str(q_id)+'.txt')), 'r') as f:
+		with open(os.path.join(BASE_DIR,('InvertedIndex/'+str(q_id)+'.txt')), 'r') as f:
 			txt = f.read().split()
 			words |= set(txt)
 			texts[txtfile.split('/')[-1]] = txt
