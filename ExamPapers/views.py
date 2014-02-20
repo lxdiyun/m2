@@ -3112,10 +3112,11 @@ def parsetexts():
 	texts, words = {}, set()
 	for q_id in qid_set:
 	#for txtfile in glob(fileglob):
-		with open(os.path.join(BASE_DIR,('InvertedIndex/'+str(q_id)+'.txt')), 'r') as f:
+		txtfile=os.path.join(BASE_DIR,('InvertedIndex/'+str(q_id)+'.txt'))
+		with open(txtfile, 'r') as f:
 			txt = f.read().split()
 			words |= set(txt)
-			texts[txtfile.split('/')[-1]] = txt
+			texts[(str(q_id)+'.txt')] = txt
 	return texts, words
 
 texts, words = parsetexts()
