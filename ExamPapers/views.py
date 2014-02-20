@@ -29,6 +29,8 @@ except: from functools import reduce
 import nltk
 nltk.data.path.append('./nltk_data/')
 from nltk.stem.wordnet import WordNetLemmatizer
+import os
+from django.conf.settings import BASE_DIR
 
 import asciitomathml.asciitomathml
 import urllib2
@@ -3100,13 +3102,19 @@ def create_question_text(question_id):
 
 #Simple Inverted Index
 def parsetexts():
-	fileglob='/InvertedIndex/*.txt'
+	questions=list(question.objects.filter(topic_id_id__lt=74).values().order_by('id'))
+	qid_set = []
+	for q in questions:
+		qid_set.append(q['id'])
+
+	#fileglob='InvertedIndex/*.txt'
 	texts, words = {}, set()
-	for txtfile in glob(fileglob):
-		with open(txtfile, 'r') as f:
+	for q_id in qid_set:
+	#for txtfile in glob(fileglob):
+		with open(os.path.join(BASE_DIR,(str(q_id)+'.txt')), 'r') as f:
 			txt = f.read().split()
 			words |= set(txt)
-			texts[txtfile.split('/')[1]] = txt
+			texts[txtfile.split('/')[-1]] = txt
 	return texts, words
 
 texts, words = parsetexts()
