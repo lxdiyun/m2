@@ -1,0 +1,1 @@
+weather model severe flood assumed occur random interval average rate year using model find probability randomly chosen year period exactly severe flood first year exactly severe flood second year using model suitable approximation find probability severe flood 1000 year
