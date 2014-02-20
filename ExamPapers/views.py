@@ -3100,14 +3100,13 @@ def create_question_text(question_id):
 
 #Simple Inverted Index
 def parsetexts():
-	fileglob='InvertedIndex/*.txt'
+	fileglob='/InvertedIndex/*.txt'
 	texts, words = {}, set()
 	for txtfile in glob(fileglob):
-		print txtfile
 		with open(txtfile, 'r') as f:
 			txt = f.read().split()
 			words |= set(txt)
-			texts[txtfile.split('/')[-1]] = txt
+			texts[txtfile.split('/')[1]] = txt
 	return texts, words
 
 texts, words = parsetexts()
