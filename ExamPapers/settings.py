@@ -148,7 +148,7 @@ INSTALLED_APPS = (
     'haystack',
 	'dajaxice',
     'ExamPapers.resource',
-    'ExamPapers.resource.templatetags'
+    'ExamPapers.resource.templatetags',
     'ExamPapers.InvertedIndex'
 )
 
