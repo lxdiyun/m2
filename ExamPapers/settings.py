@@ -27,7 +27,6 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'resource/static'),
-    os.path.join(BASE_DIR, 'InvertedIndex/')
 )
 
 
@@ -149,7 +148,7 @@ INSTALLED_APPS = (
     'haystack',
 	'dajaxice',
     'ExamPapers.resource',
-    'ExamPapers.resource.templatetags',
+    'ExamPapers.resource.templatetags'
 )
 
 HAYSTACK_CONNECTIONS = {

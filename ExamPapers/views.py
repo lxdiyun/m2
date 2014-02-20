@@ -3103,6 +3103,7 @@ def parsetexts():
 	fileglob='InvertedIndex/*.txt'
 	texts, words = {}, set()
 	for txtfile in glob(fileglob):
+		print txtfile
 		with open(txtfile, 'r') as f:
 			txt = f.read().split()
 			words |= set(txt)
@@ -3197,166 +3198,152 @@ def result_invertedindex(request,page_no):
 		query = request.GET.get("q")
 		query = query.lower()
 
-	query = re.sub(r'\$\$.*?\$\$|\\\[.*?\\\]|\(.*?\)|\[.*?\]', '', query)
+	if query != "":
+		query = re.sub(r'\$\$.*?\$\$|\\\[.*?\\\]|\(.*?\)|\[.*?\]', '', query)
 	
-	parts = query.split(";")
-	query = " ".join(parts)
+		parts = query.split(";")
+		query = " ".join(parts)
 
 	#eliminate ,
-	parts = query.split(",")
-	query = " ".join(parts)
+		parts = query.split(",")
+		query = " ".join(parts)
 
 	#eliminate .
-	sentences = query.split(".")
-	query = " ".join(sentences)
+		sentences = query.split(".")
+		query = " ".join(sentences)
 
 	#eliminate ?
-	sentences = query.split("?")
-	query = " ".join(sentences)
+		sentences = query.split("?")
+		query = " ".join(sentences)
 
-	words = query.split(" ")
-	for w in words:
-		if len(w) > 3 and w.lower() not in nltk.corpus.stopwords.words('english'):
-			w_lem = lmtzr.lemmatize(w.lower())
-			search_terms.append(w_lem.lower())
+		words = query.split(" ")
+		for w in words:
+			if len(w) > 3 and w.lower() not in nltk.corpus.stopwords.words('english'):
+				w_lem = lmtzr.lemmatize(w.lower())
+				search_terms.append(w_lem.lower())
 
-	qid_file_set=[]
-	qid_set = []
+		qid_file_set=[]
+		qid_set = []
 
-	if index == "term":
-		qid_file_set = sorted(termsearch_full(search_terms))
-	else :
-		qid_file_set = sorted(phrasesearch(search_terms))
+		if index == "term":
+			qid_file_set = sorted(termsearch_full(search_terms))
+		else :
+			qid_file_set = sorted(phrasesearch(search_terms))
 	
-	for qid in qid_file_set:
-		qid_list = qid.split(".")
-		qid_set.append(qid_list[0])
+		for qid in qid_file_set:
+			qid_list = qid.split(".")
+			qid_set.append(qid_list[0])
 
-	global_sel = list(question.objects.filter(id__in=qid_set).only('id','content','question_no','marks').order_by('id').values())
+		global_sel = list(question.objects.filter(id__in=qid_set).only('id','content','question_no','marks').order_by('id').values())
 	#get images
-	global_image_sel = list(image.objects.filter(qa_id__in=qid_set).order_by('qa_id').values())
-	global_image_id = list(image.objects.filter(qa_id__in=qid_set).order_by('qa_id').values('qa_id'))
-	image_qid_set=[]
-	for image_item in global_image_id:
-		image_qid_set.append(image_item['qa_id'])
-	global_image_q_sel = list(question.objects.filter(id__in=image_qid_set).only('id','content','question_no','marks').order_by('id').values())
+		global_image_sel = list(image.objects.filter(qa_id__in=qid_set).order_by('qa_id').values())
+		global_image_id = list(image.objects.filter(qa_id__in=qid_set).order_by('qa_id').values('qa_id'))
+		image_qid_set=[]
+		for image_item in global_image_id:
+			image_qid_set.append(image_item['qa_id'])
+		global_image_q_sel = list(question.objects.filter(id__in=image_qid_set).only('id','content','question_no','marks').order_by('id').values())
 	
 	
 	#pack the topic bar
-	topic_bar=topic.objects.all().order_by('title').values()
-	for t in topic_bar:
-		t['count'] = 0
-	if type == "search":
-		for q in global_sel:
-			for t in topic_bar:
-				if q['topic_id_id'] == t['id']:
-					t['count'] += 1
-	elif type == "image":
-		for q in global_image_sel:
-			for t in topic_bar:
-				if question.objects.get(id=q['qa_id']).topic_id_id == t['id']:
-					t['count'] += 1
+		topic_bar=topic.objects.all().order_by('title').values()
+		for t in topic_bar:
+			t['count'] = 0
+		if type == "search":
+			for q in global_sel:
+				for t in topic_bar:
+					if q['topic_id_id'] == t['id']:
+						t['count'] += 1
+		elif type == "image":
+			for q in global_image_sel:
+				for t in topic_bar:
+					if question.objects.get(id=q['qa_id']).topic_id_id == t['id']:
+						t['count'] += 1
 	
-	param['topic_bar']=topic_bar
+		param['topic_bar']=topic_bar
 	
 	#filter content
-	if type == "search":
-		if topic_id > 0: #filter by topic
-			sel = list(question.objects.filter(id__in=qid_set, topic_id_id=topic_id).only('id','content','question_no','marks').order_by('id').values())
-		else: #all topics
-			sel = global_sel
-	elif type == "image":
-		if topic_id > 0: #filter by topic
-			image_q_sel = list(question.objects.filter(id__in=image_qid_set, topic_id_id=topic_id).order_by('id').values('id'))
-		else: #all topics
-			image_q_sel = global_image_q_sel
-		topic_image_qid_set=[]
-		for image_item in image_q_sel:
-			topic_image_qid_set.append(image_item['id'])
-		image_sel = list(image.objects.filter(qa_id__in=topic_image_qid_set).order_by('qa_id').values())
+		if type == "search":
+			if topic_id > 0: #filter by topic
+				sel = list(question.objects.filter(id__in=qid_set, topic_id_id=topic_id).only('id','content','question_no','marks').order_by('id').values())
+			else: #all topics
+				sel = global_sel
+		elif type == "image":
+			if topic_id > 0: #filter by topic
+				image_q_sel = list(question.objects.filter(id__in=image_qid_set, topic_id_id=topic_id).order_by('id').values('id'))
+			else: #all topics
+				image_q_sel = global_image_q_sel
+			topic_image_qid_set=[]
+			for image_item in image_q_sel:
+				topic_image_qid_set.append(image_item['id'])
+			image_sel = list(image.objects.filter(qa_id__in=topic_image_qid_set).order_by('qa_id').values())
 	#to display number of questions (and assist in other operations)
-	no_of_qn = 0
-	if type == "search":
-		no_of_qn=len(sel)
-	elif type == "image":
-		no_of_qn=len(image_sel)
+		no_of_qn = 0
+		if type == "search":
+			no_of_qn=len(sel)
+		elif type == "image":
+			no_of_qn=len(image_sel)
 	
 	#addMaths_q_per_page is the number of questions per page
 	#from the list and page number, display current page's questions
-	if type == "image":
-		addMaths_q_per_page = 25
-	else:
-		addMaths_q_per_page = 10
-	page_items=[]
-	for i in range(0,addMaths_q_per_page):
-		if( (i + addMaths_q_per_page * (int(page_no) - 1))<no_of_qn):
-			if type == "search":
-				page_items.append(sel[i + addMaths_q_per_page * (int(page_no)-1)])
-			elif type == "image":
-				page_items.append(image_sel[i + addMaths_q_per_page * (int(page_no)-1)])
+		if type == "image":
+			addMaths_q_per_page = 25
+		else:
+			addMaths_q_per_page = 10
+		page_items=[]
+		for i in range(0,addMaths_q_per_page):
+			if( (i + addMaths_q_per_page * (int(page_no) - 1))<no_of_qn):
+				if type == "search":
+					page_items.append(sel[i + addMaths_q_per_page * (int(page_no)-1)])
+				elif type == "image":
+					page_items.append(image_sel[i + addMaths_q_per_page * (int(page_no)-1)])
 	
 	#create links of pages (determine number of pages)
-	no_pages=no_of_qn/addMaths_q_per_page
-	if((no_of_qn % addMaths_q_per_page)!=0):
-		no_pages=no_pages+1
-	page_links=[]
-	for i in range(1,no_pages+1):
-		page_links.append(i)
+		no_pages=no_of_qn/addMaths_q_per_page
+		if((no_of_qn % addMaths_q_per_page)!=0):
+			no_pages=no_pages+1
+		page_links=[]
+		for i in range(1,no_pages+1):
+			page_links.append(i)
 	
 	#call helper method to process content of each question
-	if type == "search":
-		for q in page_items:
-			q['taglist']=[]
-			q['matchtags'] = []
-			q['topic']=topic.objects.get(id=q['topic_id_id']).title
-			q['subtopic']=subtopic.objects.get(id=q['subtopic_id_id']).title
-			p=paper.objects.get(id=q['paper_id_id'])
-			q['paper']=str(p.year) + ' ' + p.month + ' Paper ' + str(p.number)
-			q['display']=process_question(q)
-			keywordTags = ''
-			tags = request.GET.getlist("tag")
-			for t in tags:
-				tagdef = tag_definitions.objects.get(title=t)
-				if tagdef.type == "K":
-					keywordTags += tagdef.content + '%'
-			keywordTags = keywordTags[0:len(keywordTags)]
-			
-			for qitem in q['display']:
-				if qitem['type'] == 1:
-					for keyword in keywordTags.split('%'):
-						p = re.compile('^' + keyword + '$')
-						newstring=''
-						for word in qitem['value'].split():
-							if word[-1:] == ',':
-								word = word[0:len(word)-1]
-								if p.match(word) != None:
-									newstring += '<b>' + word + '</b>' + ', '
-								else:
-									newstring += word + ', '
-							else:
-								if p.match(word) != None:
-									newstring += '<b>' + word + '</b>' + ' '
-								else:
-									newstring += word + ' '
-						qitem['value']=newstring
-			q['displayans']=''
-			if len(answer.objects.filter(question_id=q['id'])) > 0:
-				ans=list(answer.objects.filter(question_id=q['id']).values())[0]
-				q['displayans']=process_solution(ans)
-			taglist = tag.objects.filter(question_id=q['id']).order_by('tag__title')
-			if len(taglist) != 0:
-				for t in taglist:
-					q['taglist'].append(t)
+		if type == "search":
+			for q in page_items:
+				q['taglist']=[]
+				q['matchtags'] = []
+				q['topic']=topic.objects.get(id=q['topic_id_id']).title
+				q['subtopic']=subtopic.objects.get(id=q['subtopic_id_id']).title
+				p=paper.objects.get(id=q['paper_id_id'])
+				q['paper']=str(p.year) + ' ' + p.month + ' Paper ' + str(p.number)
+				q['display']=process_question(q)
+				q['displayans']=''
+				if len(answer.objects.filter(question_id=q['id'])) > 0:
+					ans=list(answer.objects.filter(question_id=q['id']).values())[0]
+					q['displayans']=process_solution(ans)
+				taglist = tag.objects.filter(question_id=q['id']).order_by('tag__title')
+				if len(taglist) != 0:
+					for t in taglist:
+						q['taglist'].append(t)
 
-	param['questions']=page_items
-	param['page_links']=page_links
-	param['page_no']=int(page_no)
-	param['num_q']=no_of_qn
-	if type == "search":
-		param['global_total']=len(global_sel)
-	elif type == "image":
-		param['global_total']=len(global_image_sel)
-	param['topic_id']=topic_id
+		param['questions']=page_items
+		param['page_links']=page_links
+		param['page_no']=int(page_no)
+		param['num_q']=no_of_qn
+		if type == "search":
+			param['global_total']=len(global_sel)
+		elif type == "image":
+			param['global_total']=len(global_image_sel)
+		param['topic_id']=topic_id
+	else:
+		param['questions']=[]
+		param['page_links']=[]
+		param['page_no']=0
+		param['num_q']=0
+		if type == "search":
+			param['global_total']=0
+		elif type == "image":
+			param['global_total']=0
+		param['topic_id']=topic_id
+
 	#fix text into url get
 	wordslist = (query.split(" "))
 	urltext='q='
