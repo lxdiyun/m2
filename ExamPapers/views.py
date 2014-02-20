@@ -27,6 +27,7 @@ from glob import glob
 try: reduce
 except: from functools import reduce
 import nltk
+nltk.data.path.append('./nltk_data/')
 from nltk.stem.wordnet import WordNetLemmatizer
 
 import asciitomathml.asciitomathml
