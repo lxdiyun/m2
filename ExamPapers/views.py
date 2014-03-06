@@ -2110,6 +2110,7 @@ def result(request,page_no):
 	if (type == "search" or type == "combined_search"):
 		for q in page_items:
 			q['taglist']=[]
+			q['matchtags'] =[]
 			q['topic']=topic.objects.get(id=q['topic_id_id']).title
 			q['subtopic']=subtopic.objects.get(id=q['subtopic_id_id']).title
 			p=paper.objects.get(id=q['paper_id_id'])
