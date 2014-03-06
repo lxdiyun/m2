@@ -93,7 +93,8 @@
  -->						<hr>
 						{% for item in q.display %}
 							{% ifequal item.type 1 %}
-								{{item.value|safe}}
+								{% highlight item.value with query css_class "highlight" max_length 5000%}
+								<!--{{item.value|safe}}-->
 							{% endifequal %}
 							{% ifequal item.type 2 %}
 								<img src="{{item.value}}" alt="{{item.value}}"/>
@@ -225,7 +226,8 @@
  -->						<hr>
 						{% for item in q.display %}
 							{% ifequal item.type 1 %}
-								{{item.value|safe}}
+								{% highlight item.value with query css_class "highlight" max_length 5000%}
+								<!--{{item.value|safe}}-->
 							{% endifequal %}
 							{% ifequal item.type 2 %}
 								<img src="{{item.value}}" alt="{{item.value}}"/>

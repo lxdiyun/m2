@@ -84,6 +84,13 @@
 					<div class="row-fluid">
 					<div class="well well-large span8">
 						<h3><a id="{{q.id}}" href ="/display_addmath_question/{{q.id}}/?searchtype=tag">Question {{q.question_no}} of {{q.paper}}:</a></h3>
+						{% if q.matchtags != null %}
+							{% for t in q.matchtags %}
+								{% if t != null %}
+									<a class="btn btn-success" style="margin-bottom:5px;" href="/question/tag/{{cur_subj}}/1/?list_id={{t.tag.id}}">{{t.tag.title}}</a>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
 						<!--<div class="row-fluid">
 							<div class="span2">Qid: {{q.id}}</div>
 							<div class="span2">Topic: {{q.topic}}</div>

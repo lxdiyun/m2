@@ -2149,7 +2149,13 @@ def result(request,page_no):
 			if len(taglist) != 0:
 				for t in taglist:
 					q['taglist'].append(t)
+			matchtags = tag.objects.filter(question_id=q['id'],tag__title__in=tags,tag__type__in=['C','F']).order_by('tag__title')
+			if len(matchtags) != 0:
+				for t in matchtags:
+					q['matchtags'].append(t)
+			q['count'] = len(q['matchtags'])
 	
+	page_items.sort(key = itemgetter('count', 'id'), reverse=True)
 	param['questions']=page_items
 	param['page_links']=page_links
 	param['page_no']=int(page_no)
