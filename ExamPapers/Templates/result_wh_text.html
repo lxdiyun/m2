@@ -60,7 +60,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="span9">
+			<div class="span11">
 				{% if type == "search" %}
 					<h1>Search Result</h1>
 					<hr>
@@ -71,16 +71,34 @@
 					<div class="well well-large">
 						<h3><a id="{{q.id}}" href ="/display_addmath_question/{{q.id}}/?searchtype=searchWH">Question {{q.question_no}} of {{q.paper}}:</a></h3>					
 						<hr>
+						<table cellpadding="10">
+						<tr>
+						<td>
 						{% for item in q.display %}
 							{% ifequal item.type 1 %}
 								{% highlight item.value with query css_class "highlight" max_length 5000%}
 								<!--{{item.value|safe}}-->
 							{% endifequal %}
-							{% ifequal item.type 2 %}
+							<!--{% ifequal item.type 2 %}
 								<img src="{{item.value}}" alt="{{item.value}}"/>
-							{% endifequal %}		
+							{% endifequal %}-->		
 							<br/>
 						{% endfor %}
+						</td>
+						<td>
+						{% for item in q.display %}
+							<!--{% ifequal item.type 1 %}
+								{% highlight item.value with query css_class "highlight" max_length 5000%}
+								{{item.value|safe}}
+							{% endifequal %}-->
+							{% ifequal item.type 2 %}
+								<img src="{{item.value}}" alt="{{item.value}}"/>
+							{% endifequal %}	
+							<br/>
+						{% endfor %}
+						</td>
+						</tr>
+						</table>
 					</div>
 					{% endfor %}
 					<div class="pagination">

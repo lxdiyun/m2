@@ -91,16 +91,34 @@
 							<div class="span8">Sub-Topic: {{q.subtopic}}</div>
 						</div>
  -->						<hr>
+ 						<table cellpadding="10">
+						<tr>
+						<td>
 						{% for item in q.display %}
 							{% ifequal item.type 1 %}
 								{% highlight item.value with query css_class "highlight" max_length 5000%}
 								<!--{{item.value|safe}}-->
 							{% endifequal %}
+							<!--{% ifequal item.type 2 %}
+								<img src="{{item.value}}" alt="{{item.value}}"/>
+							{% endifequal %}-->		
+							<br/>
+						{% endfor %}
+						</td>
+						<td>
+						{% for item in q.display %}
+							<!--{% ifequal item.type 1 %}
+								{% highlight item.value with query css_class "highlight" max_length 5000%}
+								{{item.value|safe}}
+							{% endifequal %}-->
 							{% ifequal item.type 2 %}
 								<img src="{{item.value}}" alt="{{item.value}}"/>
 							{% endifequal %}		
 							<br/>
 						{% endfor %}
+						</td>
+						</tr>
+						</table>
 							<hr>
 						<!-- <br/>
 						({{q.marks}} marks)<br/>
@@ -224,16 +242,34 @@
 							<div class="span8">Sub-Topic: {{q.subtopic}}</div>
 						</div>
  -->						<hr>
+ 						<table cellpadding="10">
+						<tr>
+						<td>
 						{% for item in q.display %}
 							{% ifequal item.type 1 %}
 								{% highlight item.value with query css_class "highlight" max_length 5000%}
 								<!--{{item.value|safe}}-->
 							{% endifequal %}
+							<!--{% ifequal item.type 2 %}
+								<img src="{{item.value}}" alt="{{item.value}}"/>
+							{% endifequal %}-->		
+							<br/>
+						{% endfor %}
+						</td>
+						<td>
+						{% for item in q.display %}
+							<!--{% ifequal item.type 1 %}
+								{% highlight item.value with query css_class "highlight" max_length 5000%}
+								{{item.value|safe}}
+							{% endifequal %}-->
 							{% ifequal item.type 2 %}
 								<img src="{{item.value}}" alt="{{item.value}}"/>
 							{% endifequal %}		
 							<br/>
 						{% endfor %}
+						</td>
+						</tr>
+						</table>
 							<hr>
 						<!-- <br/>
 						({{q.marks}} marks)<br/>

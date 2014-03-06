@@ -93,15 +93,32 @@
 										<div id="collapse{{i}}{{forloop.counter}}" class="accordion-body collapse">
 											<div class="accordion-inner">
 												<p>-->
+												<table cellpadding="10">
+												<tr>
+												<td>
 													{% for item in p.display %}
 														<br/>
 														{% ifequal item.type 1 %}
 															{{item.value}}
 														{% endifequal %}
+														<!--{% ifequal item.type 2 %}
+															<img src="{{item.value}}" alt="{{item.value}}"/>
+														{% endifequal %}-->							
+													{% endfor %}
+												</td>
+												<td>
+													{% for item in p.display %}
+														<br/>
+														<!--{% ifequal item.type 1 %}
+															{{item.value}}
+														{% endifequal %}-->
 														{% ifequal item.type 2 %}
 															<img src="{{item.value}}" alt="{{item.value}}"/>
-														{% endifequal %}												
+														{% endifequal %}						
 													{% endfor %}
+												</td>
+												</tr>
+												</table>
 												<!--</p>
 											</div>
 										</div>-->

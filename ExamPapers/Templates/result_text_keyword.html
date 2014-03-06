@@ -60,7 +60,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="span9">
+			<div class="span11">
 				{% if type == "search" %}
 					<h1>Search Result</h1>
 					<h5>Keywords Found: </h5>
@@ -89,15 +89,32 @@
 							<div class="span8">Sub-Topic: {{q.subtopic}}</div>
 						</div>
  -->						<hr>
+ 						<table cellpadding="10">
+						<tr>
+						<td>
 						{% for item in q.display %}
 							{% ifequal item.type 1 %}
 								{{item.value|safe}}
 							{% endifequal %}
+							<!--{% ifequal item.type 2 %}
+								<img src="{{item.value}}" alt="{{item.value}}"/>
+							{% endifequal %}-->		
+							<br/>
+						{% endfor %}
+						</td>
+						<td>
+						{% for item in q.display %}
+							<!--{% ifequal item.type 1 %}
+								{{item.value|safe}}
+							{% endifequal %}-->
 							{% ifequal item.type 2 %}
 								<img src="{{item.value}}" alt="{{item.value}}"/>
 							{% endifequal %}		
 							<br/>
 						{% endfor %}
+						</td>
+						</tr>
+						</table>
 							<hr>
 						<!-- <br/>
 						({{q.marks}} marks)<br/>
