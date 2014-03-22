@@ -2348,7 +2348,7 @@ def search_page(request):
 	param={}
 	
 	subj=list(subject.objects.filter(id=3).order_by('id').values())
-	kvaluelist = [5, 10, 15, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 35, 40, 45, 50]
+	kvaluelist = [23]
 	searchtype = request.GET.get("searchtype")
 	base_url = request.path + '?'
 	param['searchtype'] = searchtype
@@ -3394,7 +3394,7 @@ def search_keyword_cluster(request, page_no):
 	param['searchtype'] = searchtype
 	
 	#kvalue dropdown choices
-	kvaluelist = [5, 10, 15, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 35, 40, 45, 50]
+	kvaluelist = [23]
 	param['kvaluelist']=kvaluelist
 
 	query=""
