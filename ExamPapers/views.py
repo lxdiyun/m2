@@ -2158,7 +2158,7 @@ def result(request,page_no):
 	
 	if (type == "search" or type == "combined_search"):
 		page_items.sort(key = itemgetter('count', 'id'), reverse=True)
-	else
+	else:
 		page_items.sort(key = itemgetter('id'), reverse=True)
 	param['questions']=page_items
 	param['page_links']=page_links
