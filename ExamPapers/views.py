@@ -3202,7 +3202,7 @@ def result_invertedindex(request,page_no):
 	if request.GET.get("type") != None:
 		type = request.GET.get("type")
 	index = "term"
-	if request.GET.get("type") != None:
+	if request.GET.get("index") != None:
 		index = request.GET.get("index")
 		
 	#from the type (paper or topic) passed, query for questions
