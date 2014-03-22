@@ -2156,7 +2156,10 @@ def result(request,page_no):
 					q['matchtags'].append(t)
 			q['count'] = len(q['matchtags'])
 	
-	page_items.sort(key = itemgetter('count', 'id'), reverse=True)
+	if (type == "search" or type == "combined_search"):
+		page_items.sort(key = itemgetter('count', 'id'), reverse=True)
+	else
+		page_items.sort(key = itemgetter('id'), reverse=True)
 	param['questions']=page_items
 	param['page_links']=page_links
 	param['page_no']=int(page_no)
