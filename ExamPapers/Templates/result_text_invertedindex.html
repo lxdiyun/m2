@@ -53,10 +53,10 @@
 				<div class="well sidebar-nav">
 					<li class="nav-header">Topic Filter</li>
 					<ul class="nav nav-list">
-						<li {% if topic_id == 0 %}class="active"{% endif %}><a href="/result_invertedindex/1/?type={{type}}&{{urltext}}">All ({{global_total}})</a></li>
+						<li {% if topic_id == 0 %}class="active"{% endif %}><a href="/result_invertedindex/1/?type={{type}}&index={{index}}&{{urltext}}">All ({{global_total}})</a></li>
 						{% for topic in topic_bar %}
 							{% if topic.count > 0 %}
-								<li {% if topic_id == topic.id %}class="active"{% endif %}><a href="/result_invertedindex/1/?type={{type}}&{{urltext}}&topic={{topic.id}}">{{topic.title}} ({{topic.count}})</a><br/></li>
+								<li {% if topic_id == topic.id %}class="active"{% endif %}><a href="/result_invertedindex/1/?type={{type}}&index={{index}}&{{urltext}}&topic={{topic.id}}">{{topic.title}} ({{topic.count}})</a><br/></li>
 							{% endif %}
 						{% endfor %}
 					</ul>
