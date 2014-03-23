@@ -856,7 +856,7 @@ def AddMaths_Admin_ModifyQuestion(request,list_type,subj_id,page_no):
 	
 	#For each question in page, insert required values
 	for i in range(0,len(page_items)):
-		page_items[i]['display']=page_items[i]['content'][:100]+'\\]'
+		page_items[i]['display']=page_items[i]['content']
 		page_items[i]['paper']='_'
 		page_items[i]['subtopic']='_'
 		page_items[i]['sol_type']=''
