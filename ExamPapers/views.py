@@ -2577,9 +2577,9 @@ def get_org_content():
 
 #function to index all the formula
 def index(request):
-    #for id in (1, 1000):
-    formula_list = formula.objects.all()
-    for f in formula_list:
+	#for id in (1, 1000):
+	formula_list = formula.objects.all()
+	for f in formula_list:
 		the_string = f.formula
 		#the_string = '(1/sqrt6-sqrt24/3+49/sqrt294) xx 3/sqrt2 = ksqrt3'
 		#the_string = unicode(the_string.decode('utf8')) # adjust to your own encoding
@@ -2589,7 +2589,7 @@ def index(request):
 		mathML = math_obj.to_xml_string()
 		mathML = mathML.replace("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">","<math>") 	
 		create_index_model('',mathML,id)
-    return render_to_response('base.html')
+	return render_to_response('base.html')
 
 def converter(request):
 	formula_list = formula.objects.all()
