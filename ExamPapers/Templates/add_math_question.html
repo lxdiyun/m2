@@ -63,6 +63,11 @@
 					{% else %}
 						{% include 'sidebar_paper.html' %}
 					{% endif %}
+					<div class="well well-large">
+						<form action="/math_admin_form/{{list_type}}/{{page_no}}/{{subj_id}}/{{list_id}}/-1/" method="get">
+							<input type="submit" class="btn btn-primary" id="submit"  name="attempt"  value="Insert New Question"/>
+						</form>
+					</div>
   				</div>
 				<div class="span9">
 				<div class="alert alert-block alert-info">

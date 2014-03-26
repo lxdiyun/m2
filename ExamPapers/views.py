@@ -808,9 +808,9 @@ def AddMaths_Admin_ModifyQuestion(request,list_type,subj_id,page_no):
 	
 	#query paper and subtopics for display in each question
 	paperlist=list(paper.objects.filter(subject_id=subj_id,number__gt=0).only('id','year','month','number').order_by('id').values())
-	sel=list(topic.objects.filter(subject_id=subj_id).only('id').order_by('id').values())
+	seltopic=list(topic.objects.filter(subject_id=subj_id).only('id','title').order_by('id').values())
 	stopic=[]
-	for sel_topic in sel:
+	for sel_topic in seltopic:
 		stopic[0:0]=list(subtopic.objects.filter(topic_id=sel_topic['id']).only('id','title').order_by('id').values())
 	
 	#get id of type/topic/sol_type
@@ -818,21 +818,21 @@ def AddMaths_Admin_ModifyQuestion(request,list_type,subj_id,page_no):
 	#query questions based on paper, topic,all or solution type
 	sel=[]
 	if list_type=='paper':
-		sel=list(question.objects.filter(paper_id=list_id).only('id','paper_id_id','content','subtopic_id_id','type').order_by('id').values())
+		sel=list(question.objects.filter(paper_id=list_id).only('id','paper_id_id','content','subtopic_id_id','type','topic_id_id').order_by('id').values())
 		page_title=subject.objects.get(id=paper.objects.get(id=list_id).subject_id_id).title + ' ' + paper.objects.get(id=list_id).year + ' ' +  paper.objects.get(id=list_id).month + ' Paper ' + str(paper.objects.get(id=list_id).number)
 	elif list_type=='topic':		
-		sel=list(question.objects.filter(topic_id=list_id).only('id','paper_id_id','content','subtopic_id_id','type').order_by('id').values())
+		sel=list(question.objects.filter(topic_id=list_id).only('id','paper_id_id','content','subtopic_id_id','type', 'topic_id_id').order_by('id').values())
 		page_title=topic.objects.get(id=list_id).title
 	elif list_type=='tag':
 		tag_list=list(tag.objects.filter(tag=list_id).order_by('question_id').values('question_id'))
 		qid_set=[]
 		for tagitem in tag_list:
 			qid_set.append(tagitem['question_id'])
-		sel = list(question.objects.filter(pk__in=qid_set).only('id','paper_id_id','content','subtopic_id_id','type').order_by('id').values())
+		sel = list(question.objects.filter(pk__in=qid_set).only('id','paper_id_id','content','subtopic_id_id','type','topic_id_id').order_by('id').values())
 		page_title='Tags: ' + list_id
 	else:		
 		for sel_topic in stopic:
-			sel[0:0]=list(question.objects.filter(subtopic_id=sel_topic['id']).only('id','paper_id_id','content','subtopic_id_id','type').order_by('id').values())
+			sel[0:0]=list(question.objects.filter(subtopic_id=sel_topic['id']).only('id','paper_id_id','content','subtopic_id_id','type', 'topic_id_id').order_by('id').values())
 		#if is question type and not all	
 		if list_type=='question_type':
 			temp=[]			
@@ -856,9 +856,10 @@ def AddMaths_Admin_ModifyQuestion(request,list_type,subj_id,page_no):
 	
 	#For each question in page, insert required values
 	for i in range(0,len(page_items)):
-		page_items[i]['display']=page_items[i]['content']
+		page_items[i]['display']=page_items[i]['content']#[:100]+'\\]'
 		page_items[i]['paper']='_'
 		page_items[i]['subtopic']='_'
+		page_items[i]['topic']='_'
 		page_items[i]['sol_type']=''
 		for p in paperlist:
 			if(p['id']==page_items[i]['paper_id_id']):
@@ -867,6 +868,10 @@ def AddMaths_Admin_ModifyQuestion(request,list_type,subj_id,page_no):
 		for temp in stopic:
 			if(temp['id']==page_items[i]['subtopic_id_id']):
 				page_items[i]['subtopic']=temp['title']
+				break
+		for temp1 in seltopic:
+			if(temp1['id']==page_items[i]['topic_id_id']):
+				page_items[i]['topic']=temp1['title']
 				break		
 		for k in sol_format.keys():
 			if ((';'+page_items[i]['type']).find(';'+k)>= 0):
@@ -908,10 +913,17 @@ def AddMaths_Admin_QuestionForm(request,list_type,page_no,list_id,subj_id,questi
 		param['topic']=param['question'].topic_id.title
 		param['subtopic']=param['question'].subtopic_id.title
 		param['paper']=paper.objects.get(id=param['question'].paper_id)
-		
+		param['marks']=param['question'].marks
 		param['display']='\n'+param['question'].content.replace(';','\n')
 		if len(answer.objects.filter(question_id=question_id)) == 1:
 			param['answer']='\n'+answer.objects.get(question_id=question_id).content.replace(';','\n')
+		
+		param['formula'] = '\n'
+		if len(formula.objects.filter(question_id=question_id)) > 0:
+			formula_list = formula.objects.filter(question_id=question_id).values()
+			for f in formula_list:
+				param['formula'] += f['formula']+'\n'
+
 		param['tags']=tag.objects.select_related().filter(question_id=question_id)
 		param['tagdefs']=tag_definitions.objects.all()
 		
@@ -947,18 +959,23 @@ def AddMaths_Admin_QuestionForm(request,list_type,page_no,list_id,subj_id,questi
 					temp['type'].append(st_temp)
 					
 			param['sol'].append(temp)
+	else:
+		param['tagdefs']=tag_definitions.objects.all()
 		
 	param['list_type']=list_type
 	param['page_no']=page_no
 	param['list_id']=list_id
 	
 	#for new questions (additional info to select)
-	param['year_list']=range(1995,datetime.datetime.now().year) #up till previous year
+	param['year_list']=range(1997,datetime.datetime.now().year-1) #up till previous year
 	topics=list(topic.objects.filter(subject_id=subj_id).order_by('id').values())
-	topics.reverse()
+	#topics.reverse()
 	param['topics']=[]
+	for t in topics:
+		param['topics'][0:0]=list(topic.objects.filter(id=t['id']).values())
+	param['subtopics']=[]
 	for t in topics:		
-		param['topics'][0:0]=list(subtopic.objects.filter(topic_id=t['id']).values() )
+		param['subtopics'][0:0]=list(subtopic.objects.filter(topic_id=t['id']).values() )
 		
 	param['subj_id']=subj_id
 	
@@ -1060,11 +1077,13 @@ def AddMaths_qChange(request,list_type,page_no,subj_id):
 	q_id=request.POST.get('a_q_id','')
 	q_content=request.POST.get('a_content','')
 	q_sol=request.POST.get('a_sol','')
+	q_formula=request.POST.get('a_formula','')
 	q_input=request.POST.get('a_input','')
 	q_type=request.POST.get('a_type','')
 	q_ans=request.POST.get('a_ans','')
 	q_tag=request.POST.get('a_tag','')
 	q_new_tag=request.POST.get('a_new_tag','')
+	q_marks=request.POST.get('a_marks','')
 	
 	q_item=None
 	if(q_id!=''):
@@ -1077,15 +1096,12 @@ def AddMaths_qChange(request,list_type,page_no,subj_id):
 		q_month=request.POST.get('paper_month','')
 		q_num=request.POST.get('paper_num','')
 		q_topic=request.POST.get('paper_topic','')
+		q_subtopic=request.POST.get('paper_subtopic','')
 		q_paper_id=q_year
-		if(q_month=='6' and q_num=='1'):
+		if(q_month=='11' and q_num=='1'):
 			q_paper_id=q_paper_id+'01'
-		elif(q_month=='6' and q_num=='2'):
-			q_paper_id=q_paper_id+'02'
-		elif(q_month=='11' and q_num=='1'):
-			q_paper_id=q_paper_id+'03'
 		elif(q_month=='11' and q_num=='2'):
-			q_paper_id=q_paper_id+'04'
+			q_paper_id=q_paper_id+'02'
 		q_paper_id=q_paper_id+'{0:0>3}'.format(subj_id)
 		cur_paper=paper.objects.filter(id=q_paper_id)
 		if(len(cur_paper)==0):
@@ -1104,26 +1120,27 @@ def AddMaths_qChange(request,list_type,page_no,subj_id):
 			
 		q_item=question()
 		#generate id
-		q_item.id=q_year+'{0:0>3}'.format(subj_id)
-		if(q_month=='6' and q_num=='1'):
+		q_item.id=q_year
+		if(q_month=='11' and q_num=='1'):
 			q_item.id=q_item.id+'01'
-		elif(q_month=='6' and q_num=='2'):
-			q_item.id=q_item.id+'02'
-		elif(q_month=='11' and q_num=='1'):
-			q_item.id=q_item.id+'03'
 		elif(q_month=='11' and q_num=='2'):
-			q_item.id=q_item.id+'04'
+			q_item.id=q_item.id+'02'
+		q_item.id=q_item.id+'{0:0>3}'.format(subj_id)
 		q_item.id=q_item.id+'{0:0>3}'.format(q_no)
+
 		#end
 		q_item.subtopic_id_id=q_topic
-		q_item.topic_id_id=subtopic.objects.get(id=q_topic).topic_id_id
+		q_item.topic_id_id=topic.objects.get(id=q_topic).id
+		q_item.subtopic_id_id=subtopic.objects.get(id=q_subtopic).id
 		q_item.paper_id=paper.objects.get(id=q_paper_id)
 		q_item.question_no=q_no
 	
 	q_item.content=q_content
+	q_item.marks=q_marks
 	q_item.input=q_input
 	q_item.type=q_type
 	q_item.type_answer=q_ans
+
 	
 	#must include
 	q_item.q_category=''
@@ -1163,6 +1180,17 @@ def AddMaths_qChange(request,list_type,page_no,subj_id):
 	else:
 		cur_answer = answer(question_id=q_item, content=q_sol)
 		cur_answer.save()
+
+	#formula update and indexing
+	formulae=formula.objects.filter(question_id=q_item.id)
+	formulae.delete();
+	q_formula_list = q_formula.split(';')
+	for f in q_formula_list:
+		if f != '':
+			cur_formula = formula(question_id=q_item.id, formula=f, status=0)
+			cur_formula.save()
+
+	index(request)
 		
 	return add_math_question(request,list_type,subj_id,page_no)
 
@@ -1216,6 +1244,11 @@ def AddMaths_Admin_TagList(request):
 		param['taglist']=taglist
 	
 	return render_to_response('add_math_admin_taglist.html',param,RequestContext(request))
+
+def AddMaths_Admin_Formula(request):
+	param={}
+	param['reindex'] = False
+	return render_to_response('add_math_admin_formula.html',param,RequestContext(request))
 
 #regenerate keywords
 def AddMaths_Admin_RegenKeyword(request):
@@ -2589,7 +2622,14 @@ def index(request):
 		mathML = math_obj.to_xml_string()
 		mathML = mathML.replace("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">","<math>") 	
 		create_index_model('',mathML,id)
-	return render_to_response('base.html')
+	#return render_to_response('base.html')
+
+#reindex Formulae
+def AddMaths_Admin_ReindexFormulae(request):
+	param={}
+	param['reindex'] = True
+	index(request)
+	return render_to_response('add_math_admin_formula.html',param,RequestContext(request))
 
 def converter(request):
 	formula_list = formula.objects.all()
@@ -2601,7 +2641,7 @@ def converter(request):
 		mathML = mathML.replace("<math xmlns=\"http://www.w3.org/1998/Math/MathML\">","<math>")
 		f.formula = mathML
 		f.save()
-	return render_to_response('base.html')
+	#return render_to_response('base.html')
 
 def search_navigator_page(ttrs, crpage, tt_page):
 	"""ttrs : total of record set
@@ -3502,17 +3542,19 @@ def search_keyword_cluster(request, page_no):
 			for t in topic_bar:
 				t['count'] = 0
 			
+			clusters.sort(key=attrgetter('distance_to_query'))
+
 			global_count = 0
 			for i, c in enumerate(clusters):
 				if type == "search":
-					if c.distance_to_query < 2.0:
+					if i < 5:
 						global_count += len(c.points)
 						for p in c.points:
 							for t in topic_bar:
 								if p.topic == t['title']:
 									t['count'] += 1
 				elif type == "image":
-					if c.distance_to_query < 2.0:
+					if c.distance_to_query < 5:
 						global_count += len(c.images)
 						for image_item in c.images:
 							for t in topic_bar:
@@ -3524,13 +3566,13 @@ def search_keyword_cluster(request, page_no):
 				t_filter = topic.objects.get(id=topicid).title
 				for i, c in enumerate(clusters):
 					if type == "search":
-						if c.distance_to_query < 2.0:
+						if i < 5:
 							for p in c.points:
 								if p.topic != t_filter:
 									c.points.remove(p)
 							page_count += len(c.points)
 					elif type == "image":
-						if c.distance_to_query < 2.0:
+						if i < 5:
 							for image_item in c.images:
 								if question.objects.get(id=image_item['qa_id']).topic_id_id != topicid:
 									c.images.remove(image_item)

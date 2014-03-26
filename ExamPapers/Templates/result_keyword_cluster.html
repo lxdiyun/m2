@@ -60,7 +60,7 @@
 					</div>
 					<div class="row-fluid">
 						{% for i,c in clusters %}
-						{% if c.distance_to_query <= 2.0 %}
+						{% if c.distance_to_query <= 2.0 or i <= 4 %}
 							<h4>Cluster {{i|add:"1"}}</h4>
 							<div class="row-fluid">
 								<div class="span2"><h5>Common Tags:</h5></div>
@@ -144,7 +144,7 @@
 					</div>
 					<div class="row-fluid">
 						{% for i,c in clusters %}
-						{% if c.distance_to_query <= 2.0 %}
+						{% if c.distance_to_query <= 2.0 or i <= 4 %}
 							<h4>Cluster {{i|add:"1"}}</h4>
 							<div class="row-fluid">
 								<div class="span2"><h5>Common Tags:</h5></div>

@@ -240,17 +240,3 @@ def search_content_formula(mathML):
     #print 'total: ' + str(end_total - start_total)
     
     return results, num_of_results
-    
-def search_all_formula(page = 1):
-    results = []
-    
-    formula_obj = formula.objects.filter(status__exact=True)    
-    #formula_obj = formula.objects.filter(status__exact=False)                                
-                                
-    for index, obj in enumerate(formula_obj
-                                [(page-1)*10:page*10]):
-        question = obj.question
-        #Question Titles, Topic, Subtopic
-        results.append((obj.question_id, question.topic_id_id, question.content, obj.formula, index+1, index+2, ))
-
-    return results, formula_obj.count()

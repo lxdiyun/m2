@@ -231,6 +231,9 @@
 				
 				sol_field=document.getElementById('answer').value;
 				sol_field=sol_field.split('\n').join(';');
+
+				formula_field=document.getElementById('formulae').value;
+				formula_field=formula_field.split('\n').join(';');
 				
 				for(iter=0;iter<t_list.length;iter++){
 					if(t_list[iter].title=='sol_table'){
@@ -296,7 +299,9 @@
 				
 				document.getElementById('p_content').value=content_field;
 				document.getElementById('p_sol').value=sol_field;
+				document.getElementById('p_formula').value=formula_field;
 				document.getElementById('p_input').value=input_field;
+				document.getElementById('p_marks').value=document.getElementById('marks').value
 				document.getElementById('p_type').value=type_field;
 				document.getElementById('p_ans').value=type_answer_field;
 				document.getElementById('p_q_id').value='{{question.id}}';
@@ -314,6 +319,8 @@
 				captureInput();
 				document.getElementById('a_content').value=document.getElementById('p_content').value;
 				document.getElementById('a_sol').value=document.getElementById('p_sol').value;
+				document.getElementById('a_formula').value=document.getElementById('p_formula').value;
+				document.getElementById('a_marks').value=document.getElementById('p_marks').value;
 				document.getElementById('a_input').value=document.getElementById('p_input').value;
 				document.getElementById('a_type').value=document.getElementById('p_type').value;
 				document.getElementById('a_ans').value=document.getElementById('p_ans').value;
@@ -359,7 +366,6 @@
 						</div>
 						<div class="span2">
 							<select name='paper_month'>
-								<option value='6'>June</option>
 								<option value='11'>November</option>
 							</select>
 						</div>
@@ -380,6 +386,16 @@
 							</select>
 						</div>
 					</div>
+					<div class="row-fluid">
+						<div class="span3">Sub-Topic :</div>
+						<div class="span9">
+							<select name='paper_subtopic' style="width:81%">
+								{% for t in subtopics %}
+									<option value='{{t.id}}'>{{t.title}}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
 					{% endif %}
 					<div class="row-fluid">
 						<div class="span3">Question :</div>
@@ -391,6 +407,18 @@
 						<div class="span3">Answer :</div>
 						<div class="span9">
 							<textarea id='answer' name='answer' cols='70' rows='10' style='width:80%'>{{answer}}</textarea>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span3">Formulae :</div>
+						<div class="span9">
+							<textarea id='formulae' name='formulae' cols='70' rows='10' style='width:80%'>{{formula}}</textarea>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span3">Marks :</div>
+						<div class="span9">
+							<textarea id='marks' name='marks' cols='7' rows='1' style='width:80%'>{{marks}}</textarea>
 						</div>
 					</div>
 					<div class="row-fluid">
@@ -412,7 +440,7 @@
 						</div>
 					</div>
 					<div class="row-fluid">
-						<div class="span3">Solution Prompt :</div>
+						<!--<div class="span3">Solution Prompt :</div>
 						<div class="span9">
 							{% for s in sol %}
 								<table frame='box' rules='all' width='100%' title='sol_table'>
@@ -435,20 +463,22 @@
 										</tr>
 									{% endfor %}
 									<tr>
-										<!--<td><input type='button' value='Insert into group' onclick="this.value='Clicked';"/></td>-->
+										<td><input type='button' value='Insert into group' onclick="this.value='Clicked';"/></td>
 										<td><input type='button' value='Insert into group' onclick="insertSol(this);"/></td>
 										<td><input type='button' value='Delete group' onclick="removeTable(this);"/></td>
 									</tr>
 								</table>
 								<br/><br/>
 							{% endfor %}
-						</div>
+						</div>-->
 					</div>
 					<div class="form-actions">
 						<div class="span1">
 							{% csrf_token %}
 							<input type='hidden' id='a_content' name='a_content'/>
 							<input type='hidden' id='a_sol' name='a_sol'/>
+							<input type='hidden' id='a_formula' name='a_formula'/>
+							<input type='hidden' id='a_marks' name='a_marks'/>
 							<input type='hidden' id='a_input' name='a_input'/>
 							<input type='hidden' id='a_type' name='a_type'/>
 							<input type='hidden' id='a_ans' name='a_ans'/>
@@ -456,8 +486,9 @@
 							<input type='hidden' id='a_tag' name='a_tag' />
 							<input type='hidden' id='a_new_tag' name='a_new_tag' />
 							<input type="submit" class="btn btn-primary" id = "submit" value="Save" onclick='submit_page();'/>
-						</form>
+						<!--</form>-->
 						</div>
+						</form>
 						<div class="span1">
 							<form id="delete" method="post" action="/math_admin_delete/{{list_type}}/{{page_no}}/{{subj_id}}/?list_id={{list_id}}">
 								{% csrf_token %}
@@ -471,6 +502,8 @@
 							{% csrf_token %}
 							<input type='hidden' id='p_content' name='p_content'/>
 							<input type='hidden' id='p_sol' name='p_sol'/>
+							<input type='hidden' id='p_formula' name='p_formula'/>
+							<input type='hidden' id='p_marks' name='p_marks'/>
 							<input type='hidden' id='p_input' name='p_input'/>
 							<input type='hidden' id='p_type' name='p_type'/>
 							<input type='hidden' id='p_ans' name='p_ans'/>
@@ -482,7 +515,7 @@
 							-->
 						</form>
 					</div>
-				</form>
+				<!--</form>-->
 			</div>
 		</div>
 	</body>

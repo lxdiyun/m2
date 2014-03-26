@@ -185,6 +185,7 @@ def create_index_model(formula_input, mathML, id):
             formula_obj.structure_term = struc_feas
             formula_obj.constant_term = cn_feas
             formula_obj.variable_term = var_feas
+            formula_obj.status = 1
             formula_obj.save()
             
             #Create index term in formula_index table
