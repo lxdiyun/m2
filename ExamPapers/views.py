@@ -17,7 +17,7 @@ from haystack.forms import ModelSearchForm
 from haystack.views import SearchView
 from haystack.query import SearchQuerySet
 from haystack.utils import Highlighter
-from ExamPapers.formula_searcher import search_all_formula, search_content_formula
+from ExamPapers.formula_searcher import search_content_formula
 from ExamPapers.formula_indexer import *
 from django.views.decorators.csrf import csrf_exempt
 
