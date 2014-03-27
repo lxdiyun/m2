@@ -30,6 +30,7 @@ STATICFILES_DIRS = (
 )
 
 
+DATABASES['default']=dj_database_url.config()
 #online database
 #DATABASES = {
 #    'default': {
