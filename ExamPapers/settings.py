@@ -36,12 +36,12 @@ STATICFILES_DIRS = (
 #        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 #        'NAME': 'examquestions',                      # Or path to database file if using sqlite3.
 #        'USER': 'admin',                      # Not used with sqlite3.
-#        'PASSWORD': 'password',                  # Not used with sqlite3.
-#        'HOST': 'instance28075.db.xeround.com',                      # Set to empty string for localhost. Not used with sqlite3.
+#       'PASSWORD': 'password',                  # Not used with sqlite3.
+#        'HOST': 'mysql://b58a5772e4ff3d:17c7776b@us-cdbr-east-05.cleardb.net/heroku_0e51de80373e807',                      # Set to empty string for localhost. Not used with sqlite3.
 #        'PORT': '18366',                      # Set to empty string for default. Not used with sqlite3.
 #    }
 #}
-
+#
 #local
 DATABASES = {
     'default': {
