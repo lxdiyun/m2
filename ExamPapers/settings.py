@@ -29,10 +29,20 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'resource/static'),
 )
 
+DATABASES = {
+   'default': {
+        'ENGINE': '', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+   }
+}
 
 #DATABASES['default']=dj_database_url.config()
 #online database
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 #        'NAME': 'examquestions',                      # Or path to database file if using sqlite3.
@@ -41,7 +51,7 @@ STATICFILES_DIRS = (
 #        'HOST': 'mysql://b58a5772e4ff3d:17c7776b@us-cdbr-east-05.cleardb.net/heroku_0e51de80373e807',                      # Set to empty string for localhost. Not used with sqlite3.
 #        'PORT': '18366',                      # Set to empty string for default. Not used with sqlite3.
 #    }
-#}
+# }
 #
 #local
 #DATABASES = {
