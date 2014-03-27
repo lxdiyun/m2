@@ -31,7 +31,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'resource/static'),
 )
 
-# Register database schemes in URLs.
+## Register database schemes in URLs.
 urlparse.uses_netloc.append('mysql')
 
 try:
